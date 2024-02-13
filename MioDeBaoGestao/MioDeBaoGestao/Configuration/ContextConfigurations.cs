@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MioDeBaoGestao.Profiles;
 using System;
 
 namespace MioDeBaoGestao.Configuration
@@ -18,6 +19,9 @@ namespace MioDeBaoGestao.Configuration
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+
+            services.AddAutoMapper(typeof(ProfilesDTO_Entity), typeof(ProdutoDTO_ViewModel));
 
 
             return services;

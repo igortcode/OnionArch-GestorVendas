@@ -1,5 +1,6 @@
 ﻿using Gestao.Core.Interfaces.Repository;
 using Gestao.Core.Interfaces.Services;
+using Gestao.Core.Services;
 using Gestao.Data.Identity.Services;
 using Gestao.Data.Repository;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ namespace MioDeBaoGestao.Configuration
         {
             #region Services
             services.AddScoped<ISeedServices, SeedServices>();
+            services.AddScoped<IProdutoServices, ProdutoServices>();
 
             #endregion
 

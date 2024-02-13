@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MioDeBaoGestao.Models.Produto.ProdutoViewModel>
+
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar produto</a>
+    </div>
+
+    <div class="card-body">
+        <table class="table" id="table-produto">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Preco)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantidade)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Preco)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantidade)
+                        </td>
+                        <td>
+                            <div class="gap-3">
+                                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/produto-js/produto.js"></script>

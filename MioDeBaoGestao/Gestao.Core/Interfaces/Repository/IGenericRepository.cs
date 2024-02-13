@@ -14,6 +14,7 @@ namespace Gestao.Core.Interfaces.Repository
         Task<TEntity> GetByIdAsync(int id);
         Task<TEntity> GetByIdAsync(string id);
         IQueryable<TEntity> GetQueryable();
+        Task<IList<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> GetByExpressio(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> FirsOrDefaultAsync(Expression<Func<TEntity, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);

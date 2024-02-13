@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Gestao.Core.Entidades
 {
@@ -38,6 +39,13 @@ namespace Gestao.Core.Entidades
             Nome = nome;
             Preco = preco;
             Quantidade = quantidade;
+        }
+
+        public static Expression<Func<Produto, bool>> GetExpression()
+        {
+            Expression<Func<Produto, bool>> expression = null;
+
+            return expression;
         }
     }
 }
