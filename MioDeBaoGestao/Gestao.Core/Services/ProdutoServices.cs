@@ -43,7 +43,7 @@ namespace Gestao.Core.Services
         {
             try
             {
-                var entity = await _produtoRepository.FirsOrDefaultAsync(a => a.Id == id);
+                var entity = await _produtoRepository.FirstOrDefaultAsync(a => a.Id == id);
                 if (entity is null) throw new InvalidOperationException("Entidade não encontrada para esse identificador.");
 
                 entity.Atualizar(dto.Nome, dto.Preco, dto.Quantidade);
@@ -67,7 +67,7 @@ namespace Gestao.Core.Services
         {
             try
             {
-                var entity = await _produtoRepository.FirsOrDefaultAsync(a => a.Id == id);
+                var entity = await _produtoRepository.FirstOrDefaultAsync(a => a.Id == id);
 
                 return new GGet<ObterProdutoDto>
                 {
@@ -92,7 +92,7 @@ namespace Gestao.Core.Services
         {
             try
             {
-                var entity = await _produtoRepository.FirsOrDefaultAsync(a => a.Id == id);
+                var entity = await _produtoRepository.FirstOrDefaultAsync(a => a.Id == id);
                 if (entity is null) throw new InvalidOperationException("Entidade não encontrada para esse identificador.");
 
                 await _produtoRepository.DeleteAsync(entity);

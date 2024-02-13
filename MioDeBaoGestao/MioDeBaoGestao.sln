@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MioDeBaoGestao", "MioDeBaoGestao\MioDeBaoGestao.csproj", "{7E479EA6-419F-4C99-A733-DD528AAE2988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestao.Data", "Gestao.Data\Gestao.Data.csproj", "{CD1BD3F1-4CA0-4180-9997-EE9538500A11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gestao.Data", "Gestao.Data\Gestao.Data.csproj", "{CD1BD3F1-4CA0-4180-9997-EE9538500A11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestao.Core", "Gestao.Core\Gestao.Core.csproj", "{37293933-ECEA-4203-B26C-64AAD93F837D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gestao.Core", "Gestao.Core\Gestao.Core.csproj", "{37293933-ECEA-4203-B26C-64AAD93F837D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Presentation", "1-Presentation", "{CB88BA17-B4A5-4DC9-8BC7-DE0EDC1E64A1}"
 EndProject
@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Domain", "2-Domain", "{10
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Data", "3-Data", "{89C63300-5F0C-452E-B451-8CD756A11275}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-CrossCutting", "4-CrossCutting", "{A8BCCD7F-15A9-43DD-B4A7-51CAFFD6100A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Facades", "4-Facades", "{A8BCCD7F-15A9-43DD-B4A7-51CAFFD6100A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestao.Notification", "Gestao.Notification\Gestao.Notification.csproj", "{AFAF23E8-AE31-4131-8FB4-2CF932E007C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gestao.Notification", "Gestao.Notification\Gestao.Notification.csproj", "{AFAF23E8-AE31-4131-8FB4-2CF932E007C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

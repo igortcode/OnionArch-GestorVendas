@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Gestao.Core.Interfaces.CrossCutting
+namespace Gestao.Core.Interfaces.Facade
 {
-    public interface IEmailCrossCutting
+    public interface IEmailFacade
     {
         Task Enviar(
            string para,

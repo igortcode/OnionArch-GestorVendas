@@ -48,7 +48,7 @@ namespace Gestao.Data.Repository
             await saveChangeAsync();
         }
 
-        public async Task<TEntity> FirsOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await _dbSet.FirstOrDefaultAsync(expression);
         }

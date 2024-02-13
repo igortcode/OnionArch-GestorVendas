@@ -1,4 +1,4 @@
-﻿using Gestao.Core.Interfaces.CrossCutting;
+﻿using Gestao.Core.Interfaces.Facade;
 using Gestao.Core.Settings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -10,14 +10,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Gestao.Notification.Notification.CrossCutting
+namespace Gestao.Notification.Notification.Facade
 {
-    public class EmailCrossCutting : IEmailCrossCutting
+    public class EmailFacade : IEmailFacade
     {
         private readonly EmailSettings _emailSettings;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public EmailCrossCutting(IOptions<EmailSettings> emailSettings, IHostEnvironment hostEnvironment)
+        public EmailFacade(IOptions<EmailSettings> emailSettings, IHostEnvironment hostEnvironment)
         {
             _emailSettings = emailSettings.Value;
             _hostEnvironment = hostEnvironment;

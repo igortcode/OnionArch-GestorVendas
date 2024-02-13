@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gestao.Data\Gestao.Data.csproj" />
+    <ProjectReference Include="..\Gestao.Notification\Gestao.Notification.csproj" />
   </ItemGroup>
 
   <ItemGroup>

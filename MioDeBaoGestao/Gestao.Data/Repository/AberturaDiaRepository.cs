@@ -1,6 +1,10 @@
 ﻿using Gestao.Core.Entidades;
 using Gestao.Core.Interfaces.Repository;
 using Gestao.Data.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Gestao.Data.Repository
 {
@@ -8,6 +12,11 @@ namespace Gestao.Data.Repository
     {
         public AberturaDiaRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
+        }
+
+        public override Task<AberturaDia> FirstOrDefaultAsync(Expression<Func<AberturaDia, bool>> expression)
+        {
+            return _context.AberturaDias.Include(a => a.Comandas).ThenInclude(a => a.Itens).FirstOrDefaultAsync(expression);
         }
     }
 }
