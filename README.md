@@ -6,11 +6,11 @@ Descrição:
   * Sistema simples para exemplificação e utilização da arquitetura cebola.
 
 Recursos utilizados:
-  *Versão .NET: .Net 5
-  *Arquitetura: MVC e Cebola.
-  *Design Patterns: Facade e Adapter.
-  *ORM: Entity Framework Core
-  *Aplicado tambem:
+  * Versão .NET: .Net 5
+  * Arquitetura: MVC e Cebola.
+  * Design Patterns: Facade e Adapter.
+  * ORM: Entity Framework Core
+  * Aplicado tambem:
       
       >Padrões:
         - Repository 
