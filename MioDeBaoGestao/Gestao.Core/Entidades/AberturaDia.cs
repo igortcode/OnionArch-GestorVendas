@@ -4,13 +4,12 @@ using System.Security.Cryptography;
 
 namespace Gestao.Core.Entidades
 {
-    public class AberturaDia
+    public class AberturaDia : Entity
     {
-        public int Id { get; set; }
-        public string NmDia { get; set; }
-        public DateTime DataAbertura { get; set; }
-        public bool Aberta { get; set; }
-        public decimal? Faturamento { get; set; }
+        public string NmDia { get; private set; }
+        public DateTime DataAbertura { get; private set; }
+        public bool Aberta { get; private set; }
+        public decimal? Faturamento { get; private set; }
 
         public ICollection<Comanda> Comandas { get; set; }
 
@@ -22,6 +21,15 @@ namespace Gestao.Core.Entidades
             Faturamento = null;
         }
 
+        public AberturaDia(int id, string nmDia, DateTime dataAbertura, bool aberta, decimal? faturamento)
+        {
+            Id = id;
+            NmDia = nmDia;
+            DataAbertura = dataAbertura;
+            Aberta = aberta;
+            Faturamento = faturamento;
+        }
+
         public void FecharDia()
         {
             Aberta = false;
@@ -29,7 +37,7 @@ namespace Gestao.Core.Entidades
 
             foreach (var comanda in Comandas)
             {
-                comanda.ComandaFechada = true;
+                comanda.FecharComanda();
                 valorTotal += comanda.ValorTotal();
             }
 
