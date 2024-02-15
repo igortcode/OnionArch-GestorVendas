@@ -1,5 +1,5 @@
 ﻿using Gestao.Core.Entidades;
-using Gestao.Core.Interfaces.Repository;
+using Gestao.Application.Interfaces.Repository;
 using Gestao.Data.Context;
 
 namespace Gestao.Data.Repository

@@ -1,5 +1,5 @@
-﻿using Gestao.Core.Interfaces.Facade;
-using Gestao.Core.Settings;
+﻿using Gestao.Application.Interfaces.Facade;
+using Gestao.Application.Settings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using SendGrid;

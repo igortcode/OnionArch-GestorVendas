@@ -1,5 +1,5 @@
-﻿using Gestao.Core.Entidades;
-using Gestao.Core.Interfaces.Repository;
+﻿using Gestao.Application.Interfaces.Repository;
+using Gestao.Core.Entidades;
 using Gestao.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;

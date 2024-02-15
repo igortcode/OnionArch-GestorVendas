@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Gestao.Application\Gestao.Application.csproj" />
     <ProjectReference Include="..\Gestao.Core\Gestao.Core.csproj" />
   </ItemGroup>
 

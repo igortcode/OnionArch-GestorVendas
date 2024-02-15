@@ -11,7 +11,11 @@ namespace MioDeBaoGestao.Mapping
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.Nome).HasColumnType("varchar").HasMaxLength(255).IsRequired();
-            builder.Property(a => a.CPF).HasColumnType("varchar").HasMaxLength(13).IsRequired();
+
+            builder.OwnsOne(x => x.CPF)
+               .Property(x => x.Value)
+               .HasMaxLength(14)
+               .IsRequired();
 
             builder.HasMany(a => a.Comandas).WithOne(a => a.Cliente).HasForeignKey(a => a.ClienteId).IsRequired(false);
 

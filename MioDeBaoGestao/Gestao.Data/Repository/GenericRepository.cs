@@ -1,4 +1,4 @@
-﻿using Gestao.Core.Interfaces.Repository;
+﻿using Gestao.Application.Interfaces.Repository;
 using Gestao.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
