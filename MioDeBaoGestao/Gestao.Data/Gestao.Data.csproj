@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gestao.Core\Gestao.Core.csproj" />
+    <ProjectReference Include="..\Gestao.Application\Gestao.Application.csproj" />
   </ItemGroup>
 
 </Project>

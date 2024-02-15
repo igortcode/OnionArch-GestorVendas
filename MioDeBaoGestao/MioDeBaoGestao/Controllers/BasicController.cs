@@ -1,5 +1,5 @@
-﻿using Gestao.Core.DTO.Generic;
-using Gestao.Core.Enums;
+﻿using Gestao.Application.DTO.Generic;
+using Gestao.Application.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Gestao.Core.Interfaces.Services;
+﻿using Gestao.Application.Interfaces.Services;
 using Gestao.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

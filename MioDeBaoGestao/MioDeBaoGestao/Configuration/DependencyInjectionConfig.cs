@@ -1,7 +1,7 @@
-﻿using Gestao.Core.Interfaces.Facade;
-using Gestao.Core.Interfaces.Repository;
-using Gestao.Core.Interfaces.Services;
-using Gestao.Core.Services;
+﻿using Gestao.Application.Interfaces.Facade;
+using Gestao.Application.Interfaces.Repository;
+using Gestao.Application.Interfaces.Services;
+using Gestao.Application.Services;
 using Gestao.Data.Identity.Services;
 using Gestao.Data.Repository;
 using Gestao.Notification.Notification.Facade;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Gestao.Core.DTO.Produto;
+using Gestao.Application.DTO.Produto;
 using Gestao.Core.Entidades;
 
 namespace MioDeBaoGestao.Profiles

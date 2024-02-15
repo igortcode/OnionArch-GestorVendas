@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Gestao.Core.DTO.Produto;
-using Gestao.Core.Interfaces.Services;
+using Gestao.Application.DTO.Produto;
+using Gestao.Application.Enums;
+using Gestao.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Produto;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace MioDeBaoGestao.Controllers
 
             AddNotification(result);
 
-            if(!(result.TpNotif == Gestao.Core.Enums.TipoNotificacao.Sucess))
+            if(!(result.TpNotif == TipoNotificacao.Sucess))
                 return View(produto);
 
             return RedirectToAction(nameof(Index));
@@ -93,7 +94,7 @@ namespace MioDeBaoGestao.Controllers
 
             AddNotification(result);
 
-            if (!(result.TpNotif == Gestao.Core.Enums.TipoNotificacao.Sucess))
+            if (!(result.TpNotif == TipoNotificacao.Sucess))
                 return View(produto);
 
             return RedirectToAction(nameof(Index));
