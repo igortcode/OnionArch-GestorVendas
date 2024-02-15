@@ -1,20 +1,30 @@
-﻿using System;
+﻿using Gestao.Core.Validations.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Gestao.Core.Entidades
 {
-    public class Produto
+    public class Produto : Entity
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public decimal Preco { get; set; }
-        public int Quantidade { get; set; }
+        public string Nome { get; private set; }
+        public decimal Preco { get; private set; }
+        public int Quantidade { get; private set; }
 
         public ICollection<ItemComanda> ItensComanda { get; set; }
 
         public Produto(string nome, decimal preco, int quantidade)
         {
+            validacaoCampos(nome, preco, quantidade);
+
+            Nome = nome;
+            Preco = preco;
+            Quantidade = quantidade;
+        }
+
+        public Produto(int id, string nome, decimal preco, int quantidade)
+        {
+            Id = id;
             Nome = nome;
             Preco = preco;
             Quantidade = quantidade;
@@ -29,7 +39,7 @@ namespace Gestao.Core.Entidades
         public void RemoverQuantidade(int quantidade)
         {
             if (Quantidade < quantidade)
-                throw new InvalidOperationException("Não possui essa quantidade para retirada. Atualize as quantidades.");
+                throw new DomainExceptionValidate("Não possui essa quantidade para retirada. Atualize as quantidades.");
 
             Quantidade -= quantidade;
         }
@@ -46,6 +56,15 @@ namespace Gestao.Core.Entidades
             Expression<Func<Produto, bool>> expression = null;
 
             return expression;
+        }
+
+        private void validacaoCampos(string nome, decimal preco, int quantidade)
+        {
+            DomainExceptionValidate.When(string.IsNullOrWhiteSpace(nome), "Nome inválido. Não pode ser nulo ou vazio.");
+            DomainExceptionValidate.When(nome.Length > 255, "Nome inválido. Deve possuir no máximo 255 caracteres.");
+            DomainExceptionValidate.When(preco <= 0, "Preco inválido. Deve ser maior ou igual a 0.");
+            DomainExceptionValidate.When(quantidade <= 0, "Quantidade inválida. Deve ser maior ou igual a 0.");
+
         }
     }
 }
