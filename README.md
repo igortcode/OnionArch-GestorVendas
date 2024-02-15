@@ -1,4 +1,5 @@
-#Gestão de vendas
+Gestão de vendas
+
 Sistema para gestão de vendas em uma lanchonete.
 
 Descrição:
