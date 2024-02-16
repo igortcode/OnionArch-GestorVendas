@@ -9,7 +9,17 @@ namespace Gestao.Core.Entidades
     {
         public string Nome { get; private set; }
         public bool ComandaFechada { get; private set; }
-        public decimal? Total { get; private set; }
+        public decimal? Total { get {
+                CalculaValorTotal();
+
+                return Total;
+            } 
+            
+            private set
+            {
+                Total = value;
+            }      
+        }
         public int AberturaDiaId { get; private set; }
         public AberturaDia AberturaDia { get; set; }
         public int? ClienteId { get; private set; }
@@ -18,7 +28,7 @@ namespace Gestao.Core.Entidades
 
         public Comanda(string nome, int aberturaDiaId, int? clienteId = null)
         {
-            validaCampos(nome, aberturaDiaId, clienteId);
+            ValidaCampos(nome, aberturaDiaId, clienteId);
 
             Nome = nome;
             AberturaDiaId = aberturaDiaId;
@@ -36,19 +46,12 @@ namespace Gestao.Core.Entidades
         }
 
 
-        public decimal ValorTotal()
-        {
-            CalculaValorTotal();
-
-            return Total.Value;
-        }
-
         public void FecharComanda()
         {
             ComandaFechada = true;
         }
 
-        private void CalculaValorTotal()
+        public void CalculaValorTotal()
         {
             if (Itens != null && Itens.Count > 0)
             {
@@ -61,7 +64,15 @@ namespace Gestao.Core.Entidades
 
         }
 
-        private void validaCampos(string nome, int aberturaDiaId, int? clienteId)
+        public void Atualizar(string nome, int? clienteId = null)
+        {
+            ValidaCampos(nome, AberturaDiaId, clienteId);
+
+            Nome = nome;          
+            ClienteId = clienteId;
+        }
+
+        private void ValidaCampos(string nome, int aberturaDiaId, int? clienteId)
         {
             DomainExceptionValidate.When(string.IsNullOrWhiteSpace(nome), "Nome inválido. Não pode ser nulo ou vazio.");
             DomainExceptionValidate.When(nome.Length > 255, "Nome inválido. Deve possuir no máximo 255 caracteres.");

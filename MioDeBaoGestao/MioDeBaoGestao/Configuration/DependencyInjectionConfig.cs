@@ -19,6 +19,7 @@ namespace MioDeBaoGestao.Configuration
             services.AddScoped<IProdutoServices, ProdutoServices>();
             services.AddScoped<IAberturaDiaServices, AberturaDiaServices>();
             services.AddScoped<IClienteServices, ClienteServices>();
+            services.AddScoped<IComandaServices, ComandaServices>();
             #endregion
 
             #region Facade

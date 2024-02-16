@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace Gestao.Core.Entidades
 {
@@ -38,7 +37,7 @@ namespace Gestao.Core.Entidades
             foreach (var comanda in Comandas)
             {
                 comanda.FecharComanda();
-                valorTotal += comanda.ValorTotal();
+                valorTotal += comanda.Total.Value;
             }
 
             Faturamento = valorTotal;
