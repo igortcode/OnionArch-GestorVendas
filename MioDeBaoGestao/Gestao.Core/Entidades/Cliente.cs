@@ -27,6 +27,14 @@ namespace Gestao.Core.Entidades
             CPF = cpf;
         }
 
+        public void Atualizar(string nome, CpfVO cPF)
+        {
+            validaCampos(nome, cPF);
+
+            Nome = nome;
+            CPF = cPF;
+        }
+
 
         private void validaCampos(string nome, CpfVO cPF)
         {
