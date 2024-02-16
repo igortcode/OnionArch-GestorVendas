@@ -8,8 +8,6 @@ namespace Gestao.Application.Interfaces.Services
         Task<MessDto> AtualizarAsync(int id, TDTO entity);
         Task<GGet> BuscarPorIdAsync(int id);
         Task<GList> ListarAsync();
-        Task<GList> PesquisarAsync(string pesquisa);
-        Task<MessDto> DesabilitarAsync(int id);
         Task<MessDto> ExcluirAsync(int id);
     }
 }
