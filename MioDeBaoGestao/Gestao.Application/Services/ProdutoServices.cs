@@ -8,6 +8,7 @@ using Gestao.Application.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gestao.Core.Validations.Exceptions;
 
 namespace Gestao.Application.Services
 {
@@ -26,6 +27,8 @@ namespace Gestao.Application.Services
         {
             try
             {
+                if (await _produtoRepository.AnyAsync(a => a.Nome.ToLower().Equals(dto.Nome.ToLower())))
+                    throw new DomainExceptionValidate("Já existe um produto cadastrado com esse nome.");
 
                 var entity = _mapper.Map<Produto>(dto);
 
@@ -33,9 +36,12 @@ namespace Gestao.Application.Services
 
                 return new MessageDTO("Cadastro efetuado com sucesso!");
             }
+            catch (DomainExceptionValidate dev)
+            {
+                return new MessageDTO(dev.Message, TipoNotificacao.Alert, dev);
+            }
             catch (Exception ex)
             {
-
                 return new MessageDTO("Erro ao cadastrar o produto.", TipoNotificacao.Erro, ex);
             }
         }
@@ -44,6 +50,9 @@ namespace Gestao.Application.Services
         {
             try
             {
+                if (await _produtoRepository.AnyAsync(a => a.Nome.ToLower().Equals(dto.Nome.ToLower()) && a.Id != id))
+                    throw new DomainExceptionValidate("Já existe um produto cadastrado com esse nome.");
+
                 var entity = await _produtoRepository.FirstOrDefaultAsync(a => a.Id == id);
                 if (entity is null) throw new InvalidOperationException("Entidade não encontrada para esse identificador.");
 
@@ -53,13 +62,16 @@ namespace Gestao.Application.Services
 
                 return new MessageDTO("Cadastro atualizado com sucesso!");
             }
+            catch (DomainExceptionValidate dev)
+            {
+                return new MessageDTO(dev.Message, TipoNotificacao.Alert, dev);
+            }
             catch (InvalidOperationException ioe)
             {
                 return new MessageDTO(ioe.Message, TipoNotificacao.Erro, ioe);
             }
             catch (Exception ex)
             {
-
                 return new MessageDTO("Erro ao atualizar o produto.", TipoNotificacao.Erro, ex);
             }
         }
