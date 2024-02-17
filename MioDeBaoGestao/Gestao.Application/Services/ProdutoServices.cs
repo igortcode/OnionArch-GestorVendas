@@ -26,7 +26,8 @@ namespace Gestao.Application.Services
         {
             try
             {
-                var entity = new Produto(dto.Nome, dto.Preco, dto.Quantidade);
+
+                var entity = _mapper.Map<Produto>(dto);
 
                 await _produtoRepository.AddAsync(entity);
 
@@ -83,11 +84,6 @@ namespace Gestao.Application.Services
             }
         }
 
-        public Task<MessageDTO> DesabilitarAsync(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<MessageDTO> ExcluirAsync(int id)
         {
             try
@@ -125,40 +121,8 @@ namespace Gestao.Application.Services
             }
             catch (Exception ex)
             {
-
                 return new GList<ObterProdutoDto> { Message = new MessageDTO("Erro ao buscar o produto.", TipoNotificacao.Erro, ex) };
             }
-        }
-
-        public async Task<GList<ObterProdutoDto>> PesquisarAsync(string pesquisa)
-        {          
-            var expression = Produto.GetExpression();
-
-            try
-            {
-                if(decimal.TryParse(pesquisa, out var valor))
-                {
-                    expression = a => a.Preco == valor || a.Quantidade == (int) valor;
-                }
-                else
-                {
-                    expression = a => a.Nome.Contains(pesquisa);
-                }
-              
-                var entities = await _produtoRepository.GetByExpressio(expression);
-
-                return new GList<ObterProdutoDto>
-                {
-                    DTOs = _mapper.Map<List<ObterProdutoDto>>(entities),
-                    Message = new MessageDTO("Busca efetuada com sucesso!")
-                };
-
-            }
-            catch (Exception ex)
-            {
-
-                return new GList<ObterProdutoDto> { Message = new MessageDTO("Erro ao buscar o produto.", TipoNotificacao.Erro, ex) };
-            }
-        }
+        }       
     }
 }

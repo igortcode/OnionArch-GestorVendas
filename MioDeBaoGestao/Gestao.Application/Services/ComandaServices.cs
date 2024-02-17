@@ -73,26 +73,7 @@ namespace Gestao.Application.Services
             }
         }
 
-        public async Task<GGet<ObterComandaDTO>> BuscarPorIdAsync(int id)
-        {
-
-            try
-            {
-                var entity = await _comandaRepository.FirstOrDefaultAsync(a => a.Id == id);
-
-                return new GGet<ObterComandaDTO>
-                {
-                    DTO = _mapper.Map<ObterComandaDTO>(entity),
-                    Message = new MessageDTO("Busca efetuada com sucesso!")
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new GGet<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
-            }
-        }
-
+        
         public async Task<GGet<ObterComandaDTO>> BuscarPorIdEAberturadiaAsync(int id, int idAberturaDia)
         {
             try
@@ -112,11 +93,11 @@ namespace Gestao.Application.Services
             }
         }
 
-        public async Task<MessageDTO> ExcluirAsync(int id)
+        public async Task<MessageDTO> ExcluirAsync(int id, int idAbertura)
         {
             try
             {
-                var entity = await _comandaRepository.FirstOrDefaultAsync(a => a.Id == id);
+                var entity = await _comandaRepository.FirstOrDefaultAsync(a => a.Id == id && a.AberturaDiaId == idAbertura);
                 if (entity is null) throw new ArgumentException("Entidade não encontrada para esse identificador.");
 
                 await _comandaRepository.DeleteAsync(entity);
@@ -147,7 +128,7 @@ namespace Gestao.Application.Services
 
                 await _comandaRepository.UpdateAsync(entity);
 
-                return new MessageDTO("Exclusão efetuada com sucesso!");
+                return new MessageDTO("Comanda fechada com sucesso!");
             }
             catch (InvalidOperationException ioe)
             {
@@ -156,26 +137,7 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
 
-                return new MessageDTO("Erro ao excluir a comanda.", TipoNotificacao.Erro, ex);
-            }
-        }
-
-        public async Task<GList<ObterComandaDTO>> ListarAsync()
-        {
-            try
-            {
-                var entity = await _comandaRepository.GetAllAsync();
-
-                return new GList<ObterComandaDTO>
-                {
-                    DTOs = _mapper.Map<IList<ObterComandaDTO>>(entity),
-                    Message = new MessageDTO("Busca efetuada com sucesso!")
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new GList<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+                return new MessageDTO("Erro ao fechar a comanda.", TipoNotificacao.Erro, ex);
             }
         }
 

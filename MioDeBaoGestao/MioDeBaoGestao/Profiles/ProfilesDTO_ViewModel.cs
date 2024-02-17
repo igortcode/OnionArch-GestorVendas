@@ -4,9 +4,9 @@ using MioDeBaoGestao.Models.Produto;
 
 namespace MioDeBaoGestao.Profiles
 {
-    public class ProdutoDTO_ViewModel : Profile
+    public class ProfilesDTO_ViewModel : Profile
     {
-        public ProdutoDTO_ViewModel()
+        public ProfilesDTO_ViewModel()
         {
             CreateMap<ProdutoDTO, ProdutoViewModel>().ReverseMap();
             CreateMap<ObterProdutoDto, ProdutoViewModel>();
