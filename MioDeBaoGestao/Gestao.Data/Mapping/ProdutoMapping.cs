@@ -15,7 +15,10 @@ namespace MioDeBaoGestao.Mapping
             builder.Property(a => a.Quantidade).HasColumnType("int").IsRequired();
 
 
-            builder.HasMany(a => a.ItensComanda).WithOne(a => a.Produto).HasForeignKey(a => a.ProdutoId);
+            builder.HasMany(a => a.ItensComanda)
+                .WithOne(a => a.Produto)
+                .HasForeignKey(a => a.ProdutoId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
