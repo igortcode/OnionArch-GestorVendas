@@ -2,12 +2,9 @@
 
 namespace Gestao.Application.Interfaces.Services
 {
-    public interface IGenericServices<TDTO, GGet, GList, MessDto>
+    public interface IGenericServices<TDTO, MessDto>
     {
         Task<MessDto> AdicionarAsync(TDTO entity);
         Task<MessDto> AtualizarAsync(int id, TDTO entity);
-        Task<GGet> BuscarPorIdAsync(int id);
-        Task<GList> ListarAsync();
-        Task<MessDto> ExcluirAsync(int id);
     }
 }

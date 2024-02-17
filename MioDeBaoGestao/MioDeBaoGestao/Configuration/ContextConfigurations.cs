@@ -21,7 +21,7 @@ namespace MioDeBaoGestao.Configuration
                 .AddEntityFrameworkStores<ApplicationContext>();
 
 
-            services.AddAutoMapper(typeof(ProfilesDTO_Entity), typeof(ProdutoDTO_ViewModel));
+            services.AddAutoMapper(typeof(ProfilesDTO_Entity), typeof(ProfilesDTO_ViewModel));
 
 
             return services;

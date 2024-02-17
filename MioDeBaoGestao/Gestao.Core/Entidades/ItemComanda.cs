@@ -37,6 +37,20 @@ namespace Gestao.Core.Entidades
             ComandaId = comandaId;
         }
 
+        public void Atualizar(string nome, decimal preco, int quantidade)
+        {
+            validaCampos(nome, preco, quantidade, ProdutoId, ComandaId);
+
+            Nome = nome;
+            Preco = preco;
+            Quantidade = quantidade;
+        }
+
+        public void AddQuantidade(int quantidade)
+        {
+            Quantidade += quantidade;
+        }
+
         private void validaCampos(string nome, decimal preco, int quantidade, int produtoId, int comandaId)
         {
             DomainExceptionValidate.When(string.IsNullOrWhiteSpace(nome), "Nome inválido. Não pode ser nulo ou vazio.");
