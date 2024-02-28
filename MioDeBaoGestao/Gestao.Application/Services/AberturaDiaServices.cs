@@ -26,10 +26,10 @@ namespace Gestao.Application.Services
         {
             try
             {
-                if (!await _aberturaDiaRepository.AnyAsync(a => a.DataAbertura == DateTime.Now.Date && a.Aberta))
+                if (await _aberturaDiaRepository.AnyAsync(a => a.DataAbertura.Date == DateTime.Now.Date && a.Aberta))
                     throw new DomainExceptionValidate("Já existe um dia aberto.");
 
-                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.DataAbertura == DateTime.Now);
+                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.DataAbertura.Date == DateTime.Now.Date);
 
                 if (dia is null)
                 {
@@ -80,10 +80,10 @@ namespace Gestao.Application.Services
         {
             try
             {
-                if (!await _aberturaDiaRepository.AnyAsync(a => a.DataAbertura == DateTime.Now.Date && !a.Aberta))
+                if (await _aberturaDiaRepository.AnyAsync(a => a.DataAbertura.Date == DateTime.Now.Date && !a.Aberta))
                     throw new DomainExceptionValidate("O dia já esta fechado.");
 
-                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.DataAbertura == DateTime.Now);
+                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.DataAbertura.Date == DateTime.Now.Date && a.Aberta);
 
                 if (dia is null)
                     throw new InvalidOperationException("Não foi encontrado nenhum dia cadastrado.");
@@ -92,7 +92,7 @@ namespace Gestao.Application.Services
 
                 await _aberturaDiaRepository.UpdateAsync(dia);
 
-                return new MessageDTO("Dia reaberto com sucesso.");
+                return new MessageDTO("Dia fechado com sucesso.");
 
             }
             catch (DomainExceptionValidate dev)

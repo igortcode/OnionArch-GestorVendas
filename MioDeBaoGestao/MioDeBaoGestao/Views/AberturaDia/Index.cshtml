@@ -1,0 +1,117 @@
+﻿@model IEnumerable<MioDeBaoGestao.Models.AberturaDia.AberturaDiaViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    var diaVigente = Model.FirstOrDefault(a => a.Aberta);
+
+    var diasFechados = Model.Where(a => !a.Aberta).ToList();
+}
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<a class="btn btn-success" asp-action="AbrirDia">Abrir Dia</a>
+
+<hr />
+<div><h4>Dia de trabalho</h4></div>
+
+@if (diaVigente != null)
+{
+    <div class="card mb-2">
+        <div class="card-header">
+            <h4>@diaVigente.NmDia</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+
+                <dt class="col-4 mb-3">
+                    Faturamento:
+                </dt>
+                <dd class="col-8 mb-3">
+                    @diaVigente.Faturamento
+                </dd>
+                <dt class="col-4 mb-3">
+                    Data Abertura:
+                </dt>
+                <dd class="col-8 mb-3">
+                    @diaVigente.DataAbertura.ToShortDateString()
+                </dd>
+
+                <dt class="col-4 mb-3">
+                    Status:
+                </dt>
+                <dd class="col-8 mb-3">
+                    @if (diaVigente.Aberta)
+                    {
+                        <span class="text-success">Aberto</span>
+                    }
+                    else
+                    {
+                        <span class="text-secondary">Fechado</span>
+                    }
+                </dd>
+            </dl>
+
+            <div class="d-flex justify-content-around">
+                <a asp-action="Index" asp-controller="Comanda" asp-route-idAberturaDia="@diaVigente.Id" class="btn btn-outline-primary ml-2" title="Adicionar comanda"><i class="bi bi-card-checklist"></i> Comandas</a>
+                <a asp-action="FecharDia" class="btn btn-outline-warning"><span><i class="bi bi-unlock"></i> Fechar Dia</span></a>
+            </div>
+        </div>
+    </div>
+}
+
+<hr />
+@if (diasFechados.Count() > 0)
+{
+    <div class="mt-2">
+        <div><h4>Dias fechados</h4></div>
+        @foreach (var item in diasFechados)
+        {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h4>@item.NmDia</h4>
+                </div>
+
+                <div class="card-body">
+                    <dl class="row">
+
+                        <dt class="col-4 mb-3">
+                            Faturamento:
+                        </dt>
+                        <dd class="col-8 mb-3">
+                            @item.Faturamento
+                        </dd>
+                        <dt class="col-4 mb-3">
+                            Data Abertura:
+                        </dt>
+                        <dd class="col-8 mb-3">
+                            @item.DataAbertura.ToShortDateString()
+                        </dd>
+
+                        <dt class="col-4 mb-3">
+                            Status
+                        </dt>
+                        <dd class="col-8 mb-3">
+                            @if (diaVigente.Aberta)
+                            {
+                                <span class="text-success">Aberto</span>
+                            }
+                            else
+                            {
+                                <span class="text-secondary">Fechado</span>
+                            }
+                        </dd>
+                    </dl>
+
+                </div>
+
+            </div>
+
+        }
+    </div>
+}
+
+
+
+
+

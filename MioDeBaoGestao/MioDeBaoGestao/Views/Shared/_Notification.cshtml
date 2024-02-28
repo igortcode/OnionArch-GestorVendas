@@ -1,0 +1,14 @@
+﻿
+@if(ViewData["type"] != null)
+{
+    <div class="ma-3 alert @ViewData["type"]">
+        <ul>
+            @foreach (string message in (IList<string>)ViewData["messages"])
+            {
+              <li>@message</li>
+            }
+        </ul>
+    </div>
+}
+
+

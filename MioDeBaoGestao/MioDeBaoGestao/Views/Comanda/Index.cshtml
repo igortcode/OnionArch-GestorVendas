@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Gestao.Application.DTO.Comanda.ObterComandaDTO>
+
+@{
+    ViewData["Title"] = "Comandas";
+}
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
+    </div>
+
+    <div class="card-body">
+        <table class="table" id="table-comanda">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NmCliente)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ComandaFechada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NmCliente)
+                        </td>
+                        <td>
+                            @if (item.ComandaFechada)
+                            {
+                                <span class="text-secondary">Fechada</span>
+                            }
+                            else
+                            {
+                                <span class="text-success">Aberta</span>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Total)
+                        </td>
+                        <td>
+                            <div class="gap-3">
+                                <a class="btn btn-outline-primary" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i></a>
+                                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/comanda/comanda.js"></script>

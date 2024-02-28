@@ -1,14 +1,14 @@
-﻿@model MioDeBaoGestao.Models.Produto.ProdutoViewModel
+﻿@model Gestao.Application.DTO.Cliente.ClienteDTO
 
 @{
-    ViewData["Title"] = "Cadastro de produto";
+    ViewData["Title"] = "Cadastro de cliente";
 }
 
 @await Html.PartialAsync("../Shared/_Notification")
 
 <div class="card">
     <div class="card-header">
-        <h4>Cadastro de produto</h4>
+        <h4>Cadastro de cliente</h4>
     </div>
 
     <div class="card-body">
@@ -22,14 +22,9 @@
                         <span asp-validation-for="Nome" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Preco" class="control-label"></label>
-                        <input asp-for="Preco" class="form-control money" />
-                        <span asp-validation-for="Preco" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Quantidade" class="control-label"></label>
-                        <input asp-for="Quantidade" class="form-control" />
-                        <span asp-validation-for="Quantidade" class="text-danger"></span>
+                        <label asp-for="Cpf" class="control-label"></label>
+                        <input asp-for="Cpf" class="form-control cpf" />
+                        <span asp-validation-for="Cpf" class="text-danger"></span>
                     </div>
                     <div class="form-group gap-3">
                         <a class="btn btn-secondary" asp-action="Index">Voltar</a>
@@ -41,10 +36,6 @@
     </div>
 </div>
 
-
-
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

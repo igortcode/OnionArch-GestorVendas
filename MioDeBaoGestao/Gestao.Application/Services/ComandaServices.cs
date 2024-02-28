@@ -8,6 +8,7 @@ using Gestao.Core.Entidades;
 using Gestao.Core.Validations.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gestao.Application.Services
@@ -90,6 +91,26 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
                 return new GGet<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public GGet<int> BuscarUltimoIdRegistrado()
+        {
+
+            try
+            {
+                var entity = _comandaRepository.GetQueryable().OrderByDescending(a => a.Id).FirstOrDefault();
+
+                return new GGet<int>
+                {
+                    DTO = entity == null ? 0 : entity.Id,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GGet<int> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
             }
         }
 
