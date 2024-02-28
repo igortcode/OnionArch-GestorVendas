@@ -12,6 +12,8 @@ namespace MioDeBaoGestao.Mapping
 
             builder.Property(a => a.Nome).HasColumnType("varchar").HasMaxLength(255).IsRequired();
 
+            builder.Property(a => a.DtCriacao).HasColumnType("datetime").IsRequired();
+
             builder.Property(a => a.ClienteId).IsRequired(false);
 
             builder.HasMany(a => a.Itens).WithOne(a => a.Comanda).HasForeignKey(a => a.ComandaId);

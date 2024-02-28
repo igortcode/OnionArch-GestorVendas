@@ -58,7 +58,7 @@ namespace Gestao.Data.Repository
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> GetByExpressio(Expression<Func<TEntity, bool>> expression)
+        public virtual async Task<IEnumerable<TEntity>> GetByExpressio(Expression<Func<TEntity, bool>> expression)
         {
             return await _dbSet.Where(expression).ToListAsync();
         }

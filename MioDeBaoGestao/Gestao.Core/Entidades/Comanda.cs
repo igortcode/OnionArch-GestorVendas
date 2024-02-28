@@ -9,17 +9,8 @@ namespace Gestao.Core.Entidades
     {
         public string Nome { get; private set; }
         public bool ComandaFechada { get; private set; }
-        public decimal? Total { get {
-                CalculaValorTotal();
-
-                return Total;
-            } 
-            
-            private set
-            {
-                Total = value;
-            }      
-        }
+        public decimal? Total { get; set; }
+        public DateTime DtCriacao { get; private set; }
         public int AberturaDiaId { get; private set; }
         public AberturaDia AberturaDia { get; set; }
         public int? ClienteId { get; private set; }
@@ -33,9 +24,10 @@ namespace Gestao.Core.Entidades
             Nome = nome;
             AberturaDiaId = aberturaDiaId;
             ClienteId = clienteId;
+            DtCriacao = DateTime.Now;    
         }
 
-        public Comanda(int id, string nome, bool comandaFechada, decimal? total, int aberturaDiaId,  int? clienteId)
+        public Comanda(int id, string nome, bool comandaFechada, decimal? total, DateTime dtCriacao, int aberturaDiaId,  int? clienteId)
         {
             Id = id;
             Nome = nome;
@@ -43,6 +35,7 @@ namespace Gestao.Core.Entidades
             ClienteId = clienteId;
             ComandaFechada = comandaFechada;
             Total = total;
+            DtCriacao= dtCriacao;
         }
 
 

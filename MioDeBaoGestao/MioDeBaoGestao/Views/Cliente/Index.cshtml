@@ -1,28 +1,21 @@
-﻿@model IEnumerable<MioDeBaoGestao.Models.Produto.ProdutoViewModel>
-
-@{
-    ViewData["Title"] = "Produtos";
-}
+﻿@model IEnumerable<Gestao.Application.DTO.Cliente.ObterClienteDTO>
 
 @await Html.PartialAsync("../Shared/_Notification")
 
 <div class="card">
     <div class="card-header">
-        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar produto</a>
+        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar cliente</a>
     </div>
 
     <div class="card-body">
-        <table class="table" id="table-produto">
+        <table class="table" id="table-cliente">
             <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Nome)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Preco)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Quantidade)
+                        @Html.DisplayNameFor(model => model.Cpf)
                     </th>
                     <th></th>
                 </tr>
@@ -35,10 +28,7 @@
                             @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Preco)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantidade)
+                            @Html.DisplayFor(modelItem => item.Cpf)
                         </td>
                         <td>
                             <div class="gap-3">
@@ -53,6 +43,5 @@
     </div>
 </div>
 
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/produto-js/produto.js"></script>
+<script src="~/js/cliente/cliente.js"></script>

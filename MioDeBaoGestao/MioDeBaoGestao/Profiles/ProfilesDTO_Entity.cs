@@ -31,7 +31,9 @@ namespace MioDeBaoGestao.Profiles
             CreateMap<ComandaDTO, Comanda>()
                 .ConstructUsing(a => new Comanda(a.Nome, a.AberturaDiaId, a.ClienteId));
 
-            CreateMap<Comanda, ObterClienteDTO>();
+            CreateMap<Comanda, ObterComandaDTO>()
+                .ForMember(a => a.NmCliente, op => op.MapFrom(b => b.Cliente.Nome))
+                .ForMember(a => a.ClienteId, op => op.MapFrom(b => b.Cliente.Id));
             #endregion
 
             #region Produto
