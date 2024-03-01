@@ -51,6 +51,14 @@ namespace Gestao.Core.Entidades
             Quantidade += quantidade;
         }
 
+        public void RemoveQuantidade(int quantidade)
+        {
+            if (Quantidade < quantidade)
+                throw new DomainExceptionValidate("Quantidade inválida. Quantidade superior a exitente no item.");
+
+            Quantidade -= quantidade;
+        }
+
         private void validaCampos(string nome, decimal preco, int quantidade, int produtoId, int comandaId)
         {
             DomainExceptionValidate.When(string.IsNullOrWhiteSpace(nome), "Nome inválido. Não pode ser nulo ou vazio.");

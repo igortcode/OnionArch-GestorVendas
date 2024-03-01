@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Gestao.Application.DTO.ItemComanda.ObterItemComandaDTO>
+
+
+    <div class="card-body">
+        <table class="table" id="table-item-comanda">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Preco)
+                    </th>
+                    <th>
+                        Sub Total
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Preco)
+                        </td>
+                        <td>
+                            @(item.Quantidade * item.Preco)
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-outline-danger text-danger" onclick="mostrarModalQuantidade('@item.Id')"><i class="bi bi-trash"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer d-flex justify-content-center">
+         <div  class="text-center px-2 pt-1">
+            <span class="text-info"><b>Total:</b> </span>
+            @{
+                decimal valorTotal = 0;
+
+                foreach (var item in Model)
+                {
+                    valorTotal += item.Quantidade * item.Preco;
+                }
+             }
+            <span class="text-secondary"><b>R$ @valorTotal</b></span>
+        </div>
+    </div>
+
+
+<div id="produtos"></div>
+
+@await Html.PartialAsync("../ItensComanda/_QtdRemoverItemComandaPartial")
+
+<script>
+    $(document).ready(function () {
+        $('#table-item-comanda').DataTable({
+            reposive: true
+        });
+    });
+</script>

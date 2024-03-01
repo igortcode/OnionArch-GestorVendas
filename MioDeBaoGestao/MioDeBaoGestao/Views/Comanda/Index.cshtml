@@ -27,6 +27,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Total)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DtCriacao)
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -55,10 +58,17 @@
                             @Html.DisplayFor(modelItem => item.Total)
                         </td>
                         <td>
-                            <div class="gap-3">
-                                <a class="btn btn-outline-primary" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i></a>
-                                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
-                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-trash"></i></a>
+                            @Html.DisplayFor(modelItem => item.DtCriacao)
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-outline-primary mx-2" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i></a>
+                                @if (!item.ComandaFechada)
+                                {
+                                    <a class="btn btn-outline-info mx-2" onclick="fecharComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-unlock text-info"></i></a>
+                                }
+                                <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-outline-danger mx-2" onclick="excluirComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-trash text-danger"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -67,6 +77,7 @@
         </table>
     </div>
 </div>
+
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -16,7 +16,7 @@ namespace MioDeBaoGestao.Configuration
 
             services.AddDbContext<ApplicationContext>(a => 
                         a.UseMySql(configuration.GetConnectionString("MysqlConnection"), serverVersion, 
-                        a => a.EnableRetryOnFailure().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+                        a => a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationContext>();
