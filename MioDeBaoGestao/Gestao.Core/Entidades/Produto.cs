@@ -63,7 +63,7 @@ namespace Gestao.Core.Entidades
             DomainExceptionValidate.When(string.IsNullOrWhiteSpace(nome), "Nome inválido. Não pode ser nulo ou vazio.");
             DomainExceptionValidate.When(nome.Length > 255, "Nome inválido. Deve possuir no máximo 255 caracteres.");
             DomainExceptionValidate.When(preco <= 0, "Preco inválido. Deve ser maior ou igual a 0.");
-            DomainExceptionValidate.When(quantidade <= 0, "Quantidade inválida. Deve ser maior ou igual a 0.");
+            DomainExceptionValidate.When(quantidade < 0, "Quantidade inválida. Deve ser maior a 0.");
 
         }
     }

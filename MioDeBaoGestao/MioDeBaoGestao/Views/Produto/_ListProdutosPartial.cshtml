@@ -1,0 +1,74 @@
+﻿@model IEnumerable<MioDeBaoGestao.Models.Produto.ProdutoViewModel>
+
+
+<div id="modal-produto" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Selecione um produto</h5>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table" id="table-produto">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Nome)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Preco)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Quantidade)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nome)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Preco)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quantidade)
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-end">
+                                            <a class="btn btn-outline-primary text-primary" title="Selecionar" onclick="selecionarProduto('@item.Id')"><i class="bi bi-box-arrow-down-left"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary text-white" onclick="closeModal('modal-produto')">Fechar</a>
+            </div>
+        </div>       
+    </div>
+</div>
+
+<input type="hidden" id="idProd" />
+
+@await Html.PartialAsync("_QuantidadeProdutoPartial")
+
+
+<script>
+    $(document).ready(function () {
+        $('#table-produto').DataTable({
+            reposive: true
+        });
+    });
+
+    function closeModal(modalId){
+        $('#'+modalId).modal('hide');
+    }
+</script>
+

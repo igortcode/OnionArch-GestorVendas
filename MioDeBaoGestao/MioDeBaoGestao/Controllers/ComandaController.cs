@@ -4,7 +4,9 @@ using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
 using Gestao.Core.Entidades;
 using Microsoft.AspNetCore.Mvc;
+using MioDeBaoGestao.Models.Comanda;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
@@ -12,11 +14,13 @@ namespace MioDeBaoGestao.Controllers
     public class ComandaController : BasicController
     {
         private readonly IComandaServices _comandaServices;
+        private readonly IItemComandaServices _itemComandaServices;
         private readonly IMapper _mapper;
 
-        public ComandaController(IComandaServices comandaServices, IClienteServices clienteServices, IMapper mapper)
+        public ComandaController(IComandaServices comandaServices, IItemComandaServices itemComandaServices, IMapper mapper)
         {
             _comandaServices = comandaServices;
+            _itemComandaServices = itemComandaServices;
             _mapper = mapper;
         }
 
@@ -90,6 +94,30 @@ namespace MioDeBaoGestao.Controllers
             return View(comanda.DTO);
         }
 
+        public async Task<IActionResult> Detail(int id, int idAberturaDia)
+        {
+            var comanda = await _comandaServices.BuscarPorIdEAberturadiaAsync(id, idAberturaDia);
+
+            AddOnlyErrorsNotification(comanda.Message);
+
+            if (comanda.DTO is null)
+            {
+                return RedirectToAction(nameof(Index), new { IdAberturaDia = idAberturaDia, Message = "Não foi encontrado entidade com esse identificador!", TipoNotificacao = TipoNotificacao.Alert });
+            }
+
+            var itens = await _itemComandaServices.ListarItemComandaPorIdEIdComanda(id);
+
+            AddOnlyErrorsNotification(itens.Message);
+
+            var viewModel = new ComandaViewModel
+            {
+                Comanda = comanda.DTO,
+                Itens = itens.DTOs
+            };
+
+            return View(viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Edit(int id, ComandaDTO comanda)
         {
@@ -114,18 +142,28 @@ namespace MioDeBaoGestao.Controllers
 
         public async Task<IActionResult> Delete(int id, int idAberturaDia)
         {
-            var cliente = await _comandaServices.BuscarPorIdEAberturadiaAsync(id, idAberturaDia);
-
-            if (cliente.DTO is null)
-            {
-                AddNotification("Não foi encontrado entidade com esse identificador!");
-
-                return RedirectToAction(nameof(Index));
-            }
-
             var result = await _comandaServices.ExcluirAsync(id, idAberturaDia);
 
-            return RedirectToAction(nameof(Index), new { IdAberturaDia = idAberturaDia, Message = result.Mensagem, TipoNotificacao = result.TpNotif });
+            if (result.TpNotif != TipoNotificacao.Sucess)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(result.Mensagem);
+            }
+
+            return Json(result.Mensagem);
+        }
+
+        public async Task<IActionResult> FecharComanda(int id, int idAberturaDia)
+        {
+            var result = await _comandaServices.FecharComanda(id, idAberturaDia);
+
+            if(result.TpNotif != TipoNotificacao.Sucess)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(result.Mensagem);
+            }
+
+            return Json(result.Mensagem);
         }
 
     }

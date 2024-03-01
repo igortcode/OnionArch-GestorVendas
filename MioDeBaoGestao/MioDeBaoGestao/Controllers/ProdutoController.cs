@@ -5,6 +5,7 @@ using Gestao.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Produto;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
@@ -27,6 +28,15 @@ namespace MioDeBaoGestao.Controllers
             var viewModel = _mapper.Map<IEnumerable<ProdutoViewModel>>(dtos.DTOs);
 
             return AdapterView(viewModel, dtos.Message);
+        }
+
+        public async Task<ActionResult> ListarProdutoPartial()
+        {
+            var dtos = await _produtoServices.ListarAsync();
+
+            var viewModel = _mapper.Map<IEnumerable<ProdutoViewModel>>(dtos.DTOs.Where(a => a.Quantidade > 0));
+
+            return PartialView("_ListProdutosPartial", viewModel);
         }
 
 

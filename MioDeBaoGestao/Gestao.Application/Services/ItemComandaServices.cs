@@ -161,22 +161,35 @@ namespace Gestao.Application.Services
             }
         }
 
-        public async Task<MessageDTO> ExcluirItemComandaPorIdEIdComanda(int id, int idComanda)
+        public async Task<MessageDTO> ExcluirItemComandaPorIdEIdComanda(int id, int idComanda, int quantidade)
         {
             try
             {
                 var entity = await _itemComandaRepository.FirstOrDefaultAsync(a => a.ComandaId == idComanda && a.Id == id);
                 if (entity is null) throw new ArgumentException("Entidade não encontrada com esse identificador!");
 
+                if (entity.Comanda.ComandaFechada)
+                    throw new DomainExceptionValidate("Essa comanda já esta fechada!");
+
+                entity.RemoveQuantidade(quantidade);
+                
                 var produto = entity.Produto;
-                produto.AdicionarQuantidade(entity.Quantidade);
+                produto.AdicionarQuantidade(quantidade);
+
 
                 using(var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
 
                     await _produtoRepository.UpdateAsync(produto);
 
-                    await _itemComandaRepository.DeleteAsync(entity);
+                    if(entity.Quantidade == 0)
+                    {
+                        await _itemComandaRepository.DeleteAsync(entity);
+                    }
+                    else
+                    {
+                        await _itemComandaRepository.UpdateAsync(entity);
+                    }
 
                     transaction.Complete();
                 }
