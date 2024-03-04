@@ -1,4 +1,5 @@
 ﻿using Gestao.Data.Context;
+using Gestao.Data.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,7 @@ namespace MioDeBaoGestao.Configuration
                         a.UseMySql(configuration.GetConnectionString("MysqlConnection"), serverVersion, 
                         a => a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationContext>();
 
 
