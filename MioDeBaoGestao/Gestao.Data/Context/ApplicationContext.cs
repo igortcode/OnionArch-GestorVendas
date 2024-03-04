@@ -1,4 +1,5 @@
 ﻿using Gestao.Core.Entidades;
+using Gestao.Data.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using System.Reflection;
 
 namespace Gestao.Data.Context
 {
-    public class ApplicationContext : IdentityDbContext<IdentityUser>
+    public class ApplicationContext : IdentityDbContext<User>
     {
 
         public DbSet<AberturaDia> AberturaDias { get; set; }

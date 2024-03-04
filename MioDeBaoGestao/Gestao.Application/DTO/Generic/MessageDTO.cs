@@ -20,5 +20,14 @@ namespace Gestao.Application.DTO.Generic
 
             Mensagens.Add(Mensagem);
         }
+
+        public MessageDTO(IList<string> mensagens, TipoNotificacao tpNotif = TipoNotificacao.Sucess, Exception ex = null)
+        {
+            Mensagens = mensagens;
+            TpNotif = tpNotif;
+            Ex = ex;
+
+            
+        }
     }
 }
