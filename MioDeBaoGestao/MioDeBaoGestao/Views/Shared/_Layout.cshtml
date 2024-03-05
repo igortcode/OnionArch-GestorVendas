@@ -36,7 +36,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
                         </li>
                     </ul>
-                    <a class="nav navbar-text" asp-controller="Usuarios" asp-action="Edit"><span><i class="bi bi-person-bounding-box"></i></span> Hello, @User.Identity.Name!</a>
+                    <div>
+                        <a class="nav navbar-text" asp-controller="Usuarios" asp-action="Edit"><span><i class="bi bi-person-bounding-box"></i></span> Hello, @User.Identity.Name!</a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a class="nav navbar-text text-warning ml-2" asp-controller="Login" asp-action="Logout"><span><i class="bi bi-box-arrow-up-left"></i></span></a>
+
+                        }
+                    </div>
                 </div>
             </div>
         </nav>

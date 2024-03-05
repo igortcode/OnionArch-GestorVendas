@@ -79,7 +79,7 @@ namespace MioDeBaoGestao.Controllers
 
         public async Task<IActionResult> Edit()
         {
-            var userName = "igor.s.torres3";
+            var userName = User.Identity.Name;
 
             var user = await _userServices.ObterUsuarioPorUserNameAsync(userName);
 
