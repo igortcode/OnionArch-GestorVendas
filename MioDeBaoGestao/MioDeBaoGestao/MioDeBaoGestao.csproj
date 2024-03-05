@@ -30,9 +30,4 @@
     <ProjectReference Include="..\Gestao.Notification\Gestao.Notification.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\DataTables\" />
-    <Folder Include="wwwroot\Mask\" />
-  </ItemGroup>
-
 </Project>

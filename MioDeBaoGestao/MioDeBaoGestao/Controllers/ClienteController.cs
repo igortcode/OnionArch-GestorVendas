@@ -2,12 +2,14 @@
 using Gestao.Application.DTO.Generic;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
+    [Authorize]
     public class ClienteController : BasicController
     {
         private readonly IClienteServices _clienteServices;

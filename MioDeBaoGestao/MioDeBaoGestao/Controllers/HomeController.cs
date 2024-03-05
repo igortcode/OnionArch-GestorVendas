@@ -1,26 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Gestao.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MioDeBaoGestao.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
-    public class HomeController : Controller
+
+    [Authorize(Roles = "Admin,Gerente")]
+    public class HomeController : BasicController
     {
+        private readonly IAberturaDiaServices _aberturaDiaServices;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IAberturaDiaServices aberturaDiaServices)
         {
+            _aberturaDiaServices = aberturaDiaServices;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _aberturaDiaServices.RelatorioVendasAsync();
+
+            AddOnlyErrorsNotification(result.Message);
+
+            return View(result.DTOs);
         }
 
         public IActionResult Privacy()

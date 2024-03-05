@@ -1,4 +1,68 @@
-﻿@{
+﻿@model IEnumerable<Gestao.Application.DTO.RelatorioDTO.RelatorioVendasDTO>
+@{
     ViewData["Title"] = "Home";
 }
+
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header">
+        <h5>Relatório de vendas dos dias que foram fechados</h5>
+    </div>
+
+    <div class="card-body">
+        <table class="table" id="table-relatorio">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Mes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ano)
+                    </th>
+                      <th>
+                        @Html.DisplayNameFor(model => model.DiasTrabalhados)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ValorTotal)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ano)
+                        </td>
+                          <td>
+                            @Html.DisplayFor(modelItem => item.DiasTrabalhados)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorTotal)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#table-relatorio').DataTable({
+            reposive: true
+        });
+    });
+
+</script>
 
