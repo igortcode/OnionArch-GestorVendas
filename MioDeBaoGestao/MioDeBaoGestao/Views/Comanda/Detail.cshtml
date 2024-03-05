@@ -54,7 +54,7 @@
     }
 
     <div id="itens-comanda">
-        @await Html.PartialAsync("../ItensComanda/_ListItensComandaPartial", Model.Itens)
+        @await Html.PartialAsync("../ItensComanda/_ListItensComandaPartial", new MioDeBaoGestao.Models.Comanda.ItensComandaViewModel{ItensComandas = Model.Itens, ComandaFechada = Model.Comanda.ComandaFechada})
     </div>
 </div>
 

@@ -8,6 +8,7 @@ namespace Gestao.Application.Interfaces.Services
     {
         Task<MessageDTO> FecharComanda(int id, int idAberturaDia);
         Task<GGet<ObterComandaDTO>> BuscarPorIdEAberturadiaAsync(int id, int idAberturaDia);
+        Task<GGet<ObterComandaDTO>> BuscarPorIdAsync(int id);
         GGet<int> BuscarUltimoIdRegistrado();
         Task<GList<ObterComandaDTO>> ListarPorAberturaDiaAsync(int idAberturaDia);
         Task<MessageDTO> ExcluirAsync(int id, int idAberturaDia);

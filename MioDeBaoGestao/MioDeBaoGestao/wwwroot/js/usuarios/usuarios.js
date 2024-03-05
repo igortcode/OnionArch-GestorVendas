@@ -28,11 +28,7 @@ function ajaxGET(url) {
         url: url,
         type: "GET",
         dataType: "json",
-        success: function (response) {
-            swal("Status do usuário atualizado com sucesso!", {
-                icon: "success"
-            });
-
+        success: function (response) {           
             swal("Status do usuário atualizado com sucesso!", {
                 icon: "success"
             })

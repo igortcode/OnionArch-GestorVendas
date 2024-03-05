@@ -74,7 +74,26 @@ namespace Gestao.Application.Services
             }
         }
 
-        
+        public async Task<GGet<ObterComandaDTO>> BuscarPorIdAsync(int id)
+        {
+
+            try
+            {
+                var entity = await _comandaRepository.FirstOrDefaultAsync(a => a.Id == id);
+
+                return new GGet<ObterComandaDTO>
+                {
+                    DTO = _mapper.Map<ObterComandaDTO>(entity),
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GGet<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
         public async Task<GGet<ObterComandaDTO>> BuscarPorIdEAberturadiaAsync(int id, int idAberturaDia)
         {
             try

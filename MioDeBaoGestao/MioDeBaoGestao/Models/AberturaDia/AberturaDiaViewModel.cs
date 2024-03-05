@@ -9,7 +9,7 @@ namespace MioDeBaoGestao.Models.AberturaDia
     {
         public int Id { get; set; }
         public string NmDia { get; set; }
-        public bool Aberta { get; set; }
+        public bool Status { get; set; }
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Faturamento { get; set; }

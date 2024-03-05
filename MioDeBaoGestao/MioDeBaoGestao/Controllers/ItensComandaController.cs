@@ -2,6 +2,7 @@
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using MioDeBaoGestao.Models.Comanda;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,20 +11,24 @@ namespace MioDeBaoGestao.Controllers
 {
     public class ItensComandaController : BasicController
     {
-        private IItemComandaServices _itensComandaServices;
+        private readonly IItemComandaServices _itensComandaServices;
+        private readonly IComandaServices _comandaServices;
 
-        public ItensComandaController(IItemComandaServices itemComandaServices)
+        public ItensComandaController(IItemComandaServices itemComandaServices, IComandaServices comandaServices)
         {
             _itensComandaServices = itemComandaServices;
+            _comandaServices = comandaServices;
         }
 
         public async Task<IActionResult> ListItensComandaPartial(int idComanda)
         {
             var itens = await _itensComandaServices.ListarItemComandaPorIdEIdComanda(idComanda);
 
+            var comanda = await _comandaServices.BuscarPorIdAsync(idComanda);
+
             AddOnlyErrorsNotification(itens.Message);
 
-            return PartialView("_ListItensComandaPartial", itens.DTOs);
+            return PartialView("_ListItensComandaPartial", new ItensComandaViewModel { ItensComandas = itens.DTOs, ComandaFechada = comanda.DTO.ComandaFechada});
         }
 
         [HttpPost]
