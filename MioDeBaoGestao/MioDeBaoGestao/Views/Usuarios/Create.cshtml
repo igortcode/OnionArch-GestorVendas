@@ -1,0 +1,59 @@
+﻿@model Gestao.Application.DTO.Usuario.UsuarioDTO
+
+@{
+    ViewData["Title"] = "Cadastro de usuário";
+}
+
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header">
+        <h4>Cadastro de usuários</h4>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Senha" class="control-label"></label>
+                        <input asp-for="Senha" class="form-control" />
+                        <span asp-validation-for="Senha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ConfirmaSenha" class="control-label"></label>
+                        <input asp-for="ConfirmaSenha" class="form-control" />
+                        <span asp-validation-for="ConfirmaSenha" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RoleName" class="control-label"></label>
+                        @Html.DropDownList("RoleName", null, "-- Selecione um Cargo --", new {@id = "RoleName", @class= "form-control"})
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group gap-3">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar</a>
+                        <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

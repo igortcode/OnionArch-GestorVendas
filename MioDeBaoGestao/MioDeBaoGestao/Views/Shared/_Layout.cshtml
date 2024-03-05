@@ -32,8 +32,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="Index">Clientes</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                        </li>
                     </ul>
-                    <p class="nav navbar-text">Hello, @User.Identity.Name!</p>
+                    <a class="nav navbar-text" asp-controller="Usuarios" asp-action="Edit"><span><i class="bi bi-person-bounding-box"></i></span> Hello, @User.Identity.Name!</a>
                 </div>
             </div>
         </nav>
@@ -55,6 +58,7 @@
     <script src="~/DataTables/datatables.min.js"></script>
     <script src="~/mask/jquery.mask.js"></script>
     <script src="~/mask/jquery.mask.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
