@@ -48,7 +48,7 @@ namespace Gestao.Core.Entidades
         {
             if (Itens != null && Itens.Count > 0)
             {
-                Total = Itens.Sum(a => a.Preco);
+                Total = Itens.Sum(a => a.Preco * a.Quantidade);
             }
             else
             {

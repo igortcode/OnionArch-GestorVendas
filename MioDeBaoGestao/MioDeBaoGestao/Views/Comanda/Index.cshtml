@@ -7,9 +7,13 @@
 @await Html.PartialAsync("../Shared/_Notification")
 
 <div class="card">
-    <div class="card-header">
-        <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
-    </div>
+
+    @if ((bool)ViewData["StatusDia"])
+    {
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
+        </div>
+    }
 
     <div class="card-body">
         <table class="table" id="table-comanda">
@@ -63,12 +67,12 @@
                         <td>
                             <div class="d-flex justify-content-center">
                                 <a class="btn btn-outline-primary mx-2" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i></a>
-                                @if (!item.ComandaFechada)
+                                @if (!item.ComandaFechada && (bool)ViewData["StatusDia"])
                                 {
                                     <a class="btn btn-outline-info mx-2" onclick="fecharComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-unlock text-info"></i></a>
+                                    <a class="btn btn-outline-danger mx-2" onclick="excluirComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-trash text-danger"></i></a>
+                                    <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
                                 }
-                                <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
-                                <a class="btn btn-outline-danger mx-2" onclick="excluirComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-trash text-danger"></i></a>
                             </div>
                         </td>
                     </tr>

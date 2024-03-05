@@ -2,17 +2,26 @@
 
 @{
     ViewData["Title"] = "Index";
-    var diaVigente = Model.FirstOrDefault(a => a.Aberta);
+    var diaVigente = Model.FirstOrDefault(a => a.Status);
 
-    var diasFechados = Model.Where(a => !a.Aberta).ToList();
+    var diasFechados = Model.Where(a => !a.Status).ToList();
 }
 
 @await Html.PartialAsync("../Shared/_Notification")
 
-<a class="btn btn-success" asp-action="AbrirDia">Abrir Dia</a>
+<div class="card mb-2">
+    <div class="card-body d-flex justify-content-between">
+        <h4>Dia de trabalho</h4>
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+        {
+            @if (diaVigente == null)
+            {
+                <a class="btn btn-outline-success" asp-action="AbrirDia"><i class="bi bi-calendar-day"></i> Abrir Dia</a>
+            }
+        }
+    </div>
+</div>
 
-<hr />
-<div><h4>Dia de trabalho</h4></div>
 
 @if (diaVigente != null)
 {
@@ -22,35 +31,38 @@
         </div>
 
         <div class="card-body">
-            <dl class="row">
+            <div class="d-flex justify-content-center">
+                <dl class="row ">
 
-                <dt class="col-4 mb-3">
-                    Faturamento:
-                </dt>
-                <dd class="col-8 mb-3">
-                    @diaVigente.Faturamento
-                </dd>
-                <dt class="col-4 mb-3">
-                    Data Abertura:
-                </dt>
-                <dd class="col-8 mb-3">
-                    @diaVigente.DataAbertura.ToShortDateString()
-                </dd>
+                    <dt class="col-4 mb-3">
+                        Faturamento:
+                    </dt>
+                    <dd class="col-8 mb-3">
+                        @diaVigente.Faturamento
+                    </dd>
+                    <dt class="col-4 mb-3">
+                        Data Abertura:
+                    </dt>
+                    <dd class="col-8 mb-3">
+                        @diaVigente.DataAbertura.ToShortDateString()
+                    </dd>
 
-                <dt class="col-4 mb-3">
-                    Status:
-                </dt>
-                <dd class="col-8 mb-3">
-                    @if (diaVigente.Aberta)
-                    {
-                        <span class="text-success">Aberto</span>
-                    }
-                    else
-                    {
-                        <span class="text-secondary">Fechado</span>
-                    }
-                </dd>
-            </dl>
+                    <dt class="col-4 mb-3">
+                        Status:
+                    </dt>
+                    <dd class="col-8 mb-3">
+                        @if (diaVigente.Status)
+                        {
+                            <span class="text-success">Aberto</span>
+                        }
+                        else
+                        {
+                            <span class="text-secondary">Fechado</span>
+                        }
+                    </dd>
+                </dl>
+            </div>
+
 
             <div class="d-flex justify-content-around">
                 <a asp-action="Index" asp-controller="Comanda" asp-route-idAberturaDia="@diaVigente.Id" class="btn btn-outline-primary ml-2" title="Adicionar comanda"><i class="bi bi-card-checklist"></i> Comandas</a>
@@ -60,11 +72,14 @@
     </div>
 }
 
-<hr />
 @if (diasFechados.Count() > 0)
 {
     <div class="mt-2">
-        <div><h4>Dias fechados</h4></div>
+        <div class="card">
+            <div class="card-body d-flex justify-content-between">
+                <h4>Dias fechados</h4>
+            </div>
+        </div>
         @foreach (var item in diasFechados)
         {
             <div class="card mt-3">
@@ -73,40 +88,44 @@
                 </div>
 
                 <div class="card-body">
-                    <dl class="row">
+                    <div class="d-flex justify-content-center">
+                        <dl class="row">
 
-                        <dt class="col-4 mb-3">
-                            Faturamento:
-                        </dt>
-                        <dd class="col-8 mb-3">
-                            @item.Faturamento
-                        </dd>
-                        <dt class="col-4 mb-3">
-                            Data Abertura:
-                        </dt>
-                        <dd class="col-8 mb-3">
-                            @item.DataAbertura.ToShortDateString()
-                        </dd>
+                            <dt class="col-4 mb-3">
+                                Faturamento:
+                            </dt>
+                            <dd class="col-8 mb-3">
+                                @item.Faturamento
+                            </dd>
+                            <dt class="col-4 mb-3">
+                                Data Abertura:
+                            </dt>
+                            <dd class="col-8 mb-3">
+                                @item.DataAbertura.ToShortDateString()
+                            </dd>
 
-                        <dt class="col-4 mb-3">
-                            Status
-                        </dt>
-                        <dd class="col-8 mb-3">
-                            @if (diaVigente.Aberta)
-                            {
-                                <span class="text-success">Aberto</span>
-                            }
-                            else
-                            {
-                                <span class="text-secondary">Fechado</span>
-                            }
-                        </dd>
-                    </dl>
+                            <dt class="col-4 mb-3">
+                                Status
+                            </dt>
+                            <dd class="col-8 mb-3">
+                                @if (item.Status)
+                                {
+                                    <span class="text-success">Aberto</span>
+                                }
+                                else
+                                {
+                                    <span class="text-secondary">Fechado</span>
+                                }
+                            </dd>
+                        </dl>
 
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <a asp-action="Index" asp-controller="Comanda" asp-route-idAberturaDia="@item.Id" class="btn btn-outline-primary ml-2" title="Visualizar comandas"><i class="bi bi-card-checklist"></i> Comandas</a>
+                    </div>
                 </div>
 
             </div>
-
         }
     </div>
 }

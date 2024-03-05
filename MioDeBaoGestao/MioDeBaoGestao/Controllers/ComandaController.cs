@@ -16,12 +16,14 @@ namespace MioDeBaoGestao.Controllers
         private readonly IComandaServices _comandaServices;
         private readonly IItemComandaServices _itemComandaServices;
         private readonly IMapper _mapper;
+        private readonly IAberturaDiaServices _aberturaDiaServices;
 
-        public ComandaController(IComandaServices comandaServices, IItemComandaServices itemComandaServices, IMapper mapper)
+        public ComandaController(IComandaServices comandaServices, IItemComandaServices itemComandaServices, IAberturaDiaServices aberturaDiaServices, IMapper mapper)
         {
             _comandaServices = comandaServices;
             _itemComandaServices = itemComandaServices;
             _mapper = mapper;
+            _aberturaDiaServices = aberturaDiaServices;
         }
 
         public async Task<IActionResult> Index(int idAberturaDia, string message, TipoNotificacao? tipoNotificacao)
@@ -41,6 +43,10 @@ namespace MioDeBaoGestao.Controllers
                 AddOnlyErrorsNotification(comandas.Message);
             }
 
+            var aberturaDia = await _aberturaDiaServices.BuscarAberturaDiaPorId(idAberturaDia);
+
+            ViewData["StatusDia"] = aberturaDia.DTO.Status;
+
             ViewData["IdAberturaDia"] = idAberturaDia;
 
             var result = comandas.DTOs.OrderByDescending(a => a.DtCriacao).ToList();
@@ -52,7 +58,7 @@ namespace MioDeBaoGestao.Controllers
         {
             var result = _comandaServices.BuscarUltimoIdRegistrado();
 
-            AddNotification(result.Message);
+            AddOnlyErrorsNotification(result.Message);
 
             ViewData["IdAberturaDia"] = idAberturaDia;
             ViewData["SugNome"] = "Comanda " + (++result.DTO);

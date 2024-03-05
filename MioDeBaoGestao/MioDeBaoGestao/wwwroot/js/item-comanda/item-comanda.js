@@ -14,7 +14,7 @@ function removeItemComanda() {
     let qtdItemComanda = $("#input-qtd-item-comanda").val();
 
     if (qtdItemComanda < 1) {
-        alert("Quantidade inválida. Deve ser maior do que 0.");
+        swal("Quantidade inválida. Deve ser maior do que 0!", { icon: "warning" });
         return;
     }
 
@@ -36,8 +36,8 @@ function selecionarProduto(id) {
 }
 
 function salvaItem() {
-    $("#modal-qtd").modal('hide');
-    $("#modal-produto").modal('hide');
+
+    debugger;
 
     let qtd = $('#prod-qtd').val();
 
@@ -57,6 +57,9 @@ function salvaItem() {
     let message = "Item adicionado com sucesso!";
 
     ajaxPost(url, data, divId, message);
+
+    $("#modal-qtd").modal('hide');
+    $("#modal-produto").modal('hide');
 }
 
 function ajaxPost(url, dto, divId, message) {
@@ -67,10 +70,12 @@ function ajaxPost(url, dto, divId, message) {
         contentType: "application/json",
         data: JSON.stringify(dto),
         success: function (response) {
-            alert(message);
+            swal(message, { icon: "success" });
+
             $("#" + divId).html(response);
         },
         error: function (e) {
+            debugger;
             if (e.status === 400)
                 alert(e.responseText);
             else

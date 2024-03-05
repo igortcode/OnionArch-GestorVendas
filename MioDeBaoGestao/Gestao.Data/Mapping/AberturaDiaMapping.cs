@@ -13,6 +13,8 @@ namespace MioDeBaoGestao.Mapping
             builder.Property(a => a.NmDia).HasColumnType("varchar").HasMaxLength(100).IsRequired();
 
             builder.HasMany(a => a.Comandas).WithOne(a => a.AberturaDia).HasForeignKey(a => a.AberturaDiaId);
+
+            builder.Property(a => a.Faturamento).HasColumnType("Decimal").HasPrecision(12, 2).IsRequired(false);
         }
     }
 }

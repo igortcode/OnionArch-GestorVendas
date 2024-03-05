@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gestao.Core.Validations.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace Gestao.Core.Entidades
@@ -7,36 +8,38 @@ namespace Gestao.Core.Entidades
     {
         public string NmDia { get; private set; }
         public DateTime DataAbertura { get; private set; }
-        public bool Aberta { get; private set; }
+        public bool Status { get; private set; }
         public decimal? Faturamento { get; private set; }
 
         public ICollection<Comanda> Comandas { get; set; }
 
         public AberturaDia()
         {
-            NmDia = Enum.GetName<DayOfWeek>(DateTime.Now.DayOfWeek);
+            NmDia = BuscarDiaAtual();
             DataAbertura = DateTime.Now;
-            Aberta = true;
+            Status = true;
             Faturamento = null;
         }
 
-        public AberturaDia(int id, string nmDia, DateTime dataAbertura, bool aberta, decimal? faturamento)
+        public AberturaDia(int id, string nmDia, DateTime dataAbertura, bool status, decimal? faturamento)
         {
             Id = id;
             NmDia = nmDia;
             DataAbertura = dataAbertura;
-            Aberta = aberta;
+            Status = status;
             Faturamento = faturamento;
         }
 
         public void FecharDia()
         {
-            Aberta = false;
+            Status = false;
             decimal valorTotal = 0;
 
             foreach (var comanda in Comandas)
             {
                 comanda.FecharComanda();
+                comanda.CalculaValorTotal();
+
                 valorTotal += comanda.Total.Value;
             }
 
@@ -45,7 +48,30 @@ namespace Gestao.Core.Entidades
 
         public void AbrirDia()
         {
-            Aberta = true;
+            Status = true;
+        }
+
+        private string BuscarDiaAtual()
+        {
+            switch (DateTime.Now.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return "Segunda-Feira";
+                case DayOfWeek.Tuesday:
+                    return "Terça-Feira";
+                case DayOfWeek.Wednesday:
+                    return "Quarta-Feira";
+                case DayOfWeek.Thursday:
+                    return "Quinta-Feira";
+                case DayOfWeek.Friday:
+                    return "Sexta-Feira";
+                case DayOfWeek.Saturday:
+                    return "Sabado";
+                case DayOfWeek.Sunday:
+                    return "Domingo";
+                default:
+                    throw new DomainExceptionValidate("Dia inválido");
+            }
         }
     }
 }

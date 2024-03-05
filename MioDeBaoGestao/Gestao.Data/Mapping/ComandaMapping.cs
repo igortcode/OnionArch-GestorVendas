@@ -21,6 +21,8 @@ namespace MioDeBaoGestao.Mapping
             builder.HasOne(a => a.Cliente).WithMany(a => a.Comandas).HasForeignKey(a => a.ClienteId).IsRequired(false);
 
             builder.HasOne(a => a.AberturaDia).WithMany(a => a.Comandas).HasForeignKey(a => a.AberturaDiaId).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(a => a.Total).HasColumnType("Decimal").HasPrecision(12, 2).IsRequired(false);
         }
     }
 }
