@@ -20,19 +20,17 @@ namespace Gestao.Application.DTO.Usuario
         [DisplayName("Senha")]
         public string Senha { get; set; }
 
-        [Required(ErrorMessage = "Campo confirmar senha é obrigatório.")]
-        [StringLength(255, ErrorMessage = "Senha inválida. Deve conter no mínimo 5 caracteres e no máximo 255.", MinimumLength = 5)]
         [DataType(DataType.Password)]
+        [DisplayName("Nova senha")]
         public string NovaSenha { get; set; }
 
-        [Required(ErrorMessage = "Campo confirmar nova senha é obrigatório.")]
-        [StringLength(255, ErrorMessage = "Senha inválida. Deve conter no mínimo 5 caracteres e no máximo 255.", MinimumLength = 5)]
         [DataType(DataType.Password)]
-        [Compare("Password")]
+        [Compare("NovaSenha")]
         [DisplayName("Confirmar senha")]
         public string ConfirmaNovaSenha { get; set; }
 
         [Required(ErrorMessage = "Campo cargo é obrigatório.")]
+        [DisplayName("Cargo")]
         public string RoleName { get; set; }
     }
 }

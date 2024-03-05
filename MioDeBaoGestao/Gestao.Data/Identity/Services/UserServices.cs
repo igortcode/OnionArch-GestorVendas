@@ -66,7 +66,7 @@ namespace Gestao.Data.Identity.Services
 
                 var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.Senha);
 
-                if(!result.Succeeded)
+                if (!result.Succeeded)
                     return new MessageDTO(result.Errors.Select(a => a.Description).ToList(), TipoNotificacao.Alert);
 
                 return new MessageDTO("Senha alterada com sucesso!");
@@ -91,7 +91,7 @@ namespace Gestao.Data.Identity.Services
 
                 using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    IdentityResult result = null; 
+                    IdentityResult result = null;
 
                     if (!string.IsNullOrWhiteSpace(dto.NovaSenha))
                     {
@@ -105,12 +105,17 @@ namespace Gestao.Data.Identity.Services
                     {
                         var roles = await _userManager.GetRolesAsync(user);
 
-                        result = await _userManager.RemoveFromRolesAsync(user, roles);
 
-                        if (!result.Succeeded)
-                            return new MessageDTO(result.Errors.Select(a => a.Description).ToList(), TipoNotificacao.Alert);
+                        if (!roles.Contains(dto.RoleName))
+                        {
+                            result = await _userManager.RemoveFromRolesAsync(user, roles);
+                            
+                            if (!result.Succeeded)
+                                return new MessageDTO(result.Errors.Select(a => a.Description).ToList(), TipoNotificacao.Alert);
 
-                        result = await _userManager.AddToRoleAsync(user, dto.RoleName);
+                            result = await _userManager.AddToRoleAsync(user, dto.RoleName);
+
+                        }
                     }
 
                     user.Atualizar(dto.UserName, dto.Email);
@@ -125,7 +130,7 @@ namespace Gestao.Data.Identity.Services
 
                 return new MessageDTO("Usuário atualizado com sucesso!");
 
-            }         
+            }
             catch (Exception ex)
             {
                 return new MessageDTO("Erro ao atualizar o usuário!", TipoNotificacao.Erro, ex);
@@ -141,7 +146,7 @@ namespace Gestao.Data.Identity.Services
                 if (user == null)
                     throw new InvalidOperationException("Não foi encontrado nenhum usuário com esse identificador.");
 
-                var result =  await _userManager.SetLockoutEnabledAsync(user, user.LockoutEnabled ? false : true);
+                var result = await _userManager.SetLockoutEnabledAsync(user, user.LockoutEnabled ? false : true);
 
                 if (!result.Succeeded)
                     return new MessageDTO(result.Errors.Select(a => a.Description).ToList(), TipoNotificacao.Alert);
@@ -170,8 +175,10 @@ namespace Gestao.Data.Identity.Services
                                  Email = user.Email,
                                  UserName = user.UserName,
                                  RoleId = role.Id,
-                                 RoleName = role.Name
+                                 RoleName = role.Name,
+                                 Habilitado = user.LockoutEnabled
                              };
+
 
                 return new GList<ObterUsuarioDTO>
                 {
@@ -232,7 +239,8 @@ namespace Gestao.Data.Identity.Services
                                  Email = user.Email,
                                  UserName = user.UserName,
                                  RoleId = role.Id,
-                                 RoleName = role.Name
+                                 RoleName = role.Name,
+                                 Habilitado = user.LockoutEnabled
                              };
 
                 return new GGet<ObterUsuarioDTO>
@@ -248,7 +256,7 @@ namespace Gestao.Data.Identity.Services
             }
         }
 
-        public async Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorId(string id)
+        public async Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorIdAsync(string id)
         {
             try
             {
@@ -266,7 +274,8 @@ namespace Gestao.Data.Identity.Services
                                  Email = user.Email,
                                  UserName = user.UserName,
                                  RoleId = role.Id,
-                                 RoleName = role.Name
+                                 RoleName = role.Name,
+                                 Habilitado = user.LockoutEnabled
                              };
 
                 return new GGet<ObterUsuarioDTO>
@@ -282,7 +291,7 @@ namespace Gestao.Data.Identity.Services
             }
         }
 
-        public async Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorUserName(string userName)
+        public async Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorUserNameAsync(string userName)
         {
             try
             {
@@ -300,7 +309,8 @@ namespace Gestao.Data.Identity.Services
                                  Email = user.Email,
                                  UserName = user.UserName,
                                  RoleId = role.Id,
-                                 RoleName = role.Name
+                                 RoleName = role.Name,
+                                 Habilitado = user.LockoutEnabled
                              };
 
                 return new GGet<ObterUsuarioDTO>
