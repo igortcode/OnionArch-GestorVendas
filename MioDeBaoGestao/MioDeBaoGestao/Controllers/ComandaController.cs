@@ -3,6 +3,7 @@ using Gestao.Application.DTO.Comanda;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
 using Gestao.Core.Entidades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Comanda;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
+    [Authorize]
     public class ComandaController : BasicController
     {
         private readonly IComandaServices _comandaServices;

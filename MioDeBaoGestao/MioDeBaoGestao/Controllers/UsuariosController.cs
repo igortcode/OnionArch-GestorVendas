@@ -1,6 +1,7 @@
 ﻿using Gestao.Application.DTO.Usuario;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
+    [Authorize]
     public class UsuariosController : BasicController
     {
         private readonly IUserServices _userServices;
@@ -20,6 +22,7 @@ namespace MioDeBaoGestao.Controllers
             _roleServices = roleServices;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string message, TipoNotificacao? tipoNotificacao)
         {
             var result = await _userServices.ListarUsuarios();
@@ -37,6 +40,7 @@ namespace MioDeBaoGestao.Controllers
             return View(result.DTOs);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var roles = await _roleServices.ListarCargos();
@@ -49,6 +53,7 @@ namespace MioDeBaoGestao.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(UsuarioDTO dto)
         {
             await PopularViewBag();
@@ -76,6 +81,7 @@ namespace MioDeBaoGestao.Controllers
 
             return RedirectToAction(nameof(Index), new { Message = result.Mensagem, TipoNotificacao = result.TpNotif });
         }
+
 
         public async Task<IActionResult> Edit()
         {
@@ -124,7 +130,7 @@ namespace MioDeBaoGestao.Controllers
                 return View(dto);
             }
 
-            return RedirectToAction(nameof(Edit));
+            return RedirectToAction(nameof(Index), "AberturaDia", new {Message = result.Mensagem, TipoNotificacao = result.TpNotif});
         }
 
 

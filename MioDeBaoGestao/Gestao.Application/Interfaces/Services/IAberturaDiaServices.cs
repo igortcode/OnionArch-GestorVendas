@@ -1,5 +1,6 @@
 ﻿using Gestao.Application.DTO.AberturaDia;
 using Gestao.Application.DTO.Generic;
+using Gestao.Application.DTO.RelatorioDTO;
 using System.Threading.Tasks;
 
 namespace Gestao.Application.Interfaces.Services
@@ -10,5 +11,6 @@ namespace Gestao.Application.Interfaces.Services
         Task<MessageDTO> FecharDiaAsync();
         Task<GGet<AberturaDiaDTO>> BuscarAberturaDiaPorId(int id);
         Task<GList<AberturaDiaDTO>> ListarAberturasDiasAsync();
+        Task<GList<RelatorioVendasDTO>> RelatorioVendasAsync();
     }
 }

@@ -2,6 +2,7 @@
 using Gestao.Application.DTO.Produto;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Produto;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
+    [Authorize]
     public class ProdutoController : BasicController
     {
         private readonly IProdutoServices _produtoServices;

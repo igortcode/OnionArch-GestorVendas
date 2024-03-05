@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     $('#table-usuario').DataTable({
         reposive: true
+
     });
 });
 

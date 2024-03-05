@@ -1,6 +1,7 @@
 ﻿using Gestao.Application.DTO.ItemComanda;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Comanda;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
 {
+    [Authorize]
     public class ItensComandaController : BasicController
     {
         private readonly IItemComandaServices _itensComandaServices;

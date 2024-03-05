@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Gestao.Application.DTO.AberturaDia;
 using Gestao.Application.DTO.Generic;
+using Gestao.Application.DTO.RelatorioDTO;
 using Gestao.Application.Interfaces.Repository;
 using Gestao.Application.Interfaces.Services;
 using Gestao.Core.Entidades;
 using Gestao.Core.Validations.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gestao.Application.Services
@@ -125,6 +127,76 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
                 return new GList<AberturaDiaDTO> { Message = new MessageDTO("Erro ao buscar a abertura do dia", Enums.TipoNotificacao.Alert, ex) };
+            }
+        }
+
+        public async Task<GList<RelatorioVendasDTO>> RelatorioVendasAsync()
+        {
+
+            try
+            {
+                var aberturaDia = await _aberturaDiaRepository.GetByExpressio(a => !a.Status);
+
+                var relatorioPorMes = aberturaDia.GroupBy(a => a.DataAbertura.Month);
+
+                var result = new List<RelatorioVendasDTO>();
+
+                foreach(var itens in relatorioPorMes)
+                {
+                    result.Add(new RelatorioVendasDTO
+                    {
+                        Mes = BuscarMes(itens.FirstOrDefault().DataAbertura.Month),
+                        DiasTrabalhados = itens.Count(),
+                        ValorTotal = itens.Sum(a => a.Faturamento ?? 0),
+                        Ano = itens.FirstOrDefault().DataAbertura.Year
+                    });
+                }
+
+                return new GList<RelatorioVendasDTO>
+                {
+                    DTOs = result,
+                    Message = new MessageDTO("Busca efetuada com sucesso")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<RelatorioVendasDTO> { Message = new MessageDTO("Erro ao buscar o relatório do dia", Enums.TipoNotificacao.Alert, ex) };
+            }
+        }
+
+        private string BuscarMes(int id)
+        {
+            switch (id)
+            {
+                case 1:
+                    return "Janeiro";
+                case 2:
+                    return "Fevereiro";
+                case 3:
+                    return "Março";
+                case 4:
+                    return "Abril";
+                case 5:
+                    return "Maio";
+                case 6:
+                    return "Junho";
+                case 7:
+                    return "Julho";
+                case 8:
+                    return "Agosto";
+                case 9:
+                    return "Setembro";
+                case 10:
+                    return "Outubro";
+                case 11:
+                    return "Novembro";
+                case 12:
+                    return "Dezembro";
+                default:
+                    return string.Empty;
+
+
             }
         }
     }
