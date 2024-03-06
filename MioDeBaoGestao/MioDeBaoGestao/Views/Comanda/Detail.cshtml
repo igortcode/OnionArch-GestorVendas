@@ -1,0 +1,66 @@
+﻿@model MioDeBaoGestao.Models.Comanda.ComandaViewModel
+
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+<div class="card">
+    <div class="card-header">
+        <a class="btn btn-secondary" asp-action="Index" asp-route-idAberturaDia="@Model.Comanda.AberturaDiaId">Voltar</a>
+    </div>
+
+    <div class="card-body">
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-row justify-content-around">
+                <div>
+                    <span><b>Nome:</b> </span>
+                    <span>@Html.DisplayFor(model => model.Comanda.Nome)</span>
+                </div>
+
+                <div>
+                    <span class="mr-2"><b>Status:</b> </span>
+                    <span>
+                        @if (Model.Comanda.ComandaFechada)
+                        {
+                            <span class="text-secondary">Fechada</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">Aberta</span>
+                        }
+                    </span>
+                </div>
+
+                <div>
+                    <span class="mr-2"><b>Nome Cliente:</b> </span>
+                    <span>
+                        @Html.DisplayFor(model => model.Comanda.NmCliente)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="idComanda" value="@Model.Comanda.Id" />
+<input type="hidden" id="idItemComanda" />
+
+<div class="card mt-4">
+    @if (!Model.Comanda.ComandaFechada)
+    {
+        <div class="card-header">
+            <a class="btn btn-outline-success text-success" onclick="findProdutos()"><span><i class="bi bi-bag-plus"></i></span> Adicionar Item</a>
+        </div>
+    }
+
+    <div id="itens-comanda">
+        @await Html.PartialAsync("../ItensComanda/_ListItensComandaPartial", new MioDeBaoGestao.Models.Comanda.ItensComandaViewModel{ItensComandas = Model.Itens, ComandaFechada = Model.Comanda.ComandaFechada})
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="~/js/item-comanda/item-comanda.js"></script>
+
+

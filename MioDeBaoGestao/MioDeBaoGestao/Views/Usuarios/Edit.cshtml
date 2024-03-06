@@ -1,0 +1,105 @@
+﻿@model Gestao.Application.DTO.Usuario.AtualizaUsuarioDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <h4>Atualizar cadastro usuário</h4>
+        <div class="form-check">
+            <input type="checkbox" id="form-edit" onclick="enableForm()" class="form-check-input" name="form-edit" />
+            <label for="form-edit" class="form-check-label">Editar dados</label>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form id="edit-form" asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Id" type="hidden" />
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Senha" class="control-label"></label>
+                        <input asp-for="Senha" class="form-control" />
+                        <span asp-validation-for="Senha" class="text-danger"></span>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" id="atuSenha" onclick="openDivAtualizaSenha()" class="form-check-input" name="atuSenha" />
+                        <label for="atuSenha" class="form-check-label">Atualizar senha</label>
+                    </div>
+                    <div id="senha-atu" style="display:none">
+                        <div class="form-group">
+                            <label asp-for="NovaSenha" class="control-label"></label>
+                            <input id="nsenha" asp-for="NovaSenha" class="form-control" />
+                            <span asp-validation-for="NovaSenha" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmaNovaSenha" class="control-label"></label>
+                            <input id="cnsenha" asp-for="ConfirmaNovaSenha" class="form-control" />
+                            <span asp-validation-for="ConfirmaNovaSenha" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="RoleName" class="control-label"></label>
+                        @Html.DropDownList("RoleName", null, "-- Selecione um Cargo --", new {@id = "RoleName", @class= "form-control"})
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group gap-3">
+                        <input type="submit" value="Atualizar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#edit-form :input").prop('readonly', true);
+    });
+
+    function openDivAtualizaSenha() {
+        var ele = document.getElementById("senha-atu");
+        if (document.getElementById('atuSenha').checked) {
+            ele.style.display = "block";
+        }
+        else {
+            ele.style.display = "none";
+            $("#nsenha").val("");
+            $("#ncsenha").val("");
+        }
+    }
+
+    function enableForm() {
+        if (document.getElementById('form-edit').checked) {
+            $("#edit-form :input").prop('readonly', false);
+
+        }
+        else{
+            $("#edit-form :input").prop('readonly', true);
+        }
+    }
+</script>

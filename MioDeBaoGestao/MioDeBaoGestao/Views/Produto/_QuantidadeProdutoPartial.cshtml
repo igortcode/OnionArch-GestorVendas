@@ -1,0 +1,31 @@
+﻿
+<div id="modal-qtd" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Selecione uma quantidade</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal('modal-qtd')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="prod-qtd">Quantidade:</label>
+                        <input type="number" id="prod-qtd" name="prod-qtd" value="1" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="salvaItem()">Salvar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #modal-qtd{
+        z-index: 1200;
+    }
+</style>

@@ -1,0 +1,41 @@
+﻿@model Gestao.Application.DTO.Cliente.ObterClienteDTO
+
+@{
+    ViewData["Title"] = "Alterar cliente";
+}
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header">
+        <h4>Alterar Cliente</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-group">
+                        <label asp-for="Nome" class="control-label"></label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Cpf" class="control-label"></label>
+                        <input asp-for="Cpf" class="form-control cpf" />
+                        <span asp-validation-for="Cpf" class="text-danger"></span>
+                    </div>                
+                    <div class="form-group gap-3">
+                        <a class="btn btn-secondary" asp-action="Index">Voltar</a>
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

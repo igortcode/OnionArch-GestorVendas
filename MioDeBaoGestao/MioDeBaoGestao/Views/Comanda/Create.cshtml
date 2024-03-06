@@ -1,0 +1,52 @@
+﻿@model Gestao.Application.DTO.Comanda.ComandaDTO
+
+@{
+    ViewData["Title"] = "Cadastro de comandas";
+}
+
+@await Html.PartialAsync("../Shared/_Notification")
+
+<div class="card">
+    <div class="card-header">
+        <h4>Cadastro de comandas</h4>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="AberturaDiaId" id="idAberturaDia" value="@ViewData["IdAberturaDia"]" />
+                    <div class="form-group">
+                        <label asp-for="Nome" class="control-label"></label>
+                        <input asp-for="Nome" class="form-control" value="@ViewData["SugNome"]" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="nmCliente" class="control-label">Nome do Cliente</label>
+                        <div class="d-flex flex-row">
+                            <input disabled name="nmCliente" id="nmCliente" class="form-control" />
+                            <a class="btn btn-outline-primary ml-2" onclick="getClienteModal()"><i class="bi bi-search"></i></a>
+                        </div>                    
+                        <input type="hidden" asp-for="ClienteId" id="idCliente" />
+                    </div>
+                    <div class="form-group gap-3">
+                        <a class="btn btn-secondary" asp-action="Index" asp-route-idAberturaDia="@ViewData["IdAberturaDia"]">Voltar</a>
+                        <input type="submit" value="Cadastrar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cliente-modal"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="~/js/cliente/cliente.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
