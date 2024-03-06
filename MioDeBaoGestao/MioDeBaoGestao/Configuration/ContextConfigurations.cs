@@ -19,8 +19,16 @@ namespace MioDeBaoGestao.Configuration
                         a.UseMySql(configuration.GetConnectionString("MysqlConnection"), serverVersion, 
                         a => a.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
-            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole>(options => { 
+                options.SignIn.RequireConfirmedAccount = false; 
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase  = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<ApplicationContext>();
+
+            services.ConfigureApplicationCookie(options => {
+                options.AccessDeniedPath = "/Login/AccessDenied";
+            });
 
 
             services.AddAutoMapper(typeof(ProfilesDTO_Entity), typeof(ProfilesDTO_ViewModel));
