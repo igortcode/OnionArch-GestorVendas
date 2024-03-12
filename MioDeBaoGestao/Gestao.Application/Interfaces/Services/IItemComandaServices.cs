@@ -9,5 +9,7 @@ namespace Gestao.Application.Interfaces.Services
         Task<GGet<ObterItemComandaDTO>> ObterItemComandaPorIdEIdComanda(int id, int idComanda);
         Task<MessageDTO> ExcluirItemComandaPorIdEIdComanda(int id, int idComanda, int quantidade);
         Task<GList<ObterItemComandaDTO>> ListarItemComandaPorIdEIdComanda(int idComanda);
+        Task<GList<ObterItemComandaDTO>> ListarItemComandaPorIdEIdComandaPaginadoAsync(int idComanda, int page, int pageSize);
+        Task<GList<ObterItemComandaDTO>> PesquisarItemComandaPorIdEIdComandaPaginadoAsync(string search, int idComanda, int page, int pageSize);
     }
 }

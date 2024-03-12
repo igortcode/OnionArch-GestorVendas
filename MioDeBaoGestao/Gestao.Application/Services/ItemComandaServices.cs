@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Gestao.Application.DTO.Generic;
 using Gestao.Application.DTO.ItemComanda;
+using Gestao.Application.DTO.Produto;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Repository;
 using Gestao.Application.Interfaces.Services;
@@ -205,6 +206,46 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
                 return new MessageDTO("Erro ao excluir o item de comanda.", TipoNotificacao.Erro, ex);
+            }
+        }
+
+        public async Task<GList<ObterItemComandaDTO>> ListarItemComandaPorIdEIdComandaPaginadoAsync(int idComanda, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _itemComandaRepository.ListarPaginadoPorIdComandaAsync(idComanda, page, pageSize);
+
+                return new GList<ObterItemComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterItemComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterItemComandaDTO>> PesquisarItemComandaPorIdEIdComandaPaginadoAsync(string search, int idComanda, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _itemComandaRepository.PesquisarPaginadoPorIdComandaAsync(search, idComanda, page, pageSize);
+
+                return new GList<ObterItemComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterItemComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
             }
         }
     }

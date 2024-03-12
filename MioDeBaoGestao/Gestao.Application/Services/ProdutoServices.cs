@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gestao.Core.Validations.Exceptions;
+using Gestao.Application.DTO.Cliente;
 
 namespace Gestao.Application.Services
 {
@@ -135,6 +136,46 @@ namespace Gestao.Application.Services
             {
                 return new GList<ObterProdutoDto> { Message = new MessageDTO("Erro ao buscar o produto.", TipoNotificacao.Erro, ex) };
             }
-        }       
+        }
+
+        public async Task<GList<ObterProdutoDto>> ListarPaginadoAsync(int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _produtoRepository.ListarPaginadoAsync(page, pageSize);
+
+                return new GList<ObterProdutoDto>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterProdutoDto> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterProdutoDto>> PesquisarPaginadoAsync(string search, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _produtoRepository.PesquisarPaginadoAsync(search, page, pageSize);
+
+                return new GList<ObterProdutoDto>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterProdutoDto> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
     }
 }

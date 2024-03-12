@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Gestao.Application.DTO.Cliente;
+using Gestao.Application.DTO.Comanda;
 using Gestao.Application.DTO.Generic;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Repository;
@@ -134,5 +135,44 @@ namespace Gestao.Application.Services
             }
         }
 
+        public async Task<GList<ObterClienteDTO>> ListarPaginadoAsync(int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _clienteRepository.ListarPaginadoAsync(page, pageSize);
+
+                return new GList<ObterClienteDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterClienteDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterClienteDTO>> PesquisarPaginadoAsync(string search, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _clienteRepository.PesquisarPaginadoAsync(search, page, pageSize);
+
+                return new GList<ObterClienteDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterClienteDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
     }
 }

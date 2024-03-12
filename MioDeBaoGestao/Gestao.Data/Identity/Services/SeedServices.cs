@@ -3,6 +3,8 @@ using Gestao.Data.Context;
 using Gestao.Data.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq;
 
 namespace Gestao.Data.Identity.Services

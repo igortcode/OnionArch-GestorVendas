@@ -54,9 +54,9 @@ namespace MioDeBaoGestao.Controllers
         }
 
         [Authorize(Roles = "Admin, Gerente")]
-        public async Task<IActionResult> FecharDia()
+        public async Task<IActionResult> FecharDia(int id)
         {
-            var result = await _aberturaDiaServices.FecharDiaAsync();
+            var result = await _aberturaDiaServices.FecharDiaAsync(id);
 
             AddNotification(result);
 

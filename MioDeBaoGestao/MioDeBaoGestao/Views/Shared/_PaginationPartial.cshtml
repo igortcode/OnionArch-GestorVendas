@@ -1,0 +1,32 @@
+﻿@model Gestao.Application.DTO.Generic.PagedListMetaDataDTO
+
+<div class="pagination-container">
+    <ul class="pagination">
+
+        @if (Model.HasPreviousPage)
+        {
+            <li class="PagedList-skipToPrevious"><a onclick="getData('@(Model.PageNumber-1)', '')">&lt;</a></li>
+        }
+
+        @for (int i = 0; i < Model.PageCount; i++)
+        {
+            int pageNumber = i + 1;
+            string active = Model.PageNumber == pageNumber ? "active" : "";
+
+            <li class="@active" onclick="getData('@pageNumber', '@active')"><span>@(pageNumber)</span></li>
+
+        }
+
+        @if (Model.HasNextPage)
+        {
+            <li class="PagedList-skipToNext"><a onclick="getData('@(Model.PageNumber+1)', '')">&gt;</a></li>
+        }
+    </ul>
+</div>
+
+<script>
+    function getData(page, active) {
+        if (active === "")
+            location.href = getCustomHref(page);
+    }
+</script>

@@ -8,7 +8,7 @@ namespace Gestao.Application.Interfaces.Services
     public interface IAberturaDiaServices
     {
         Task<MessageDTO> AbrirDiaAsync();
-        Task<MessageDTO> FecharDiaAsync();
+        Task<MessageDTO> FecharDiaAsync(int id);
         Task<GGet<AberturaDiaDTO>> BuscarAberturaDiaPorId(int id);
         Task<GList<AberturaDiaDTO>> ListarAberturasDiasAsync();
         Task<GList<RelatorioVendasDTO>> RelatorioVendasAsync();

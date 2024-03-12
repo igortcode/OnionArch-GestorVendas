@@ -1,16 +1,23 @@
 ﻿
-$(document).ready(function () {
-    $('#table-comanda').DataTable({
-        reposive: true,
-        order: [[5, 'desc']],
-        columnDefs: [
-            {
-                target: 4,
-                visible: false
-            }
-        ]
-    });
-});
+function getCustomHref(page) {
+
+    debugger;
+    const pesquisa = $("#pesquisa-txt").val();
+    const idAberturaDia = $("#aberturaDia").val();
+
+    return "/Comanda/Search?page=" + page + "&idAberturaDia=" + idAberturaDia + "&search=" + pesquisa
+}
+
+function handlerOnChangePesquisa() {
+    const pesquisa = $("#pesquisa-txt").val();
+    if (pesquisa.length > 4) {
+        getData(0);
+    }
+}
+
+function getData(page) {
+   location.href = getCustomHref(page);
+}
 
 function fecharComanda(idComanda, idAberturaDia) {
     if (confirm("Confirma o fechamento da comanda?")) {
