@@ -12,5 +12,6 @@ namespace Gestao.Application.Interfaces.Services
         Task<GList<ObterProdutoDto>> ListarAsync();
         Task<GList<ObterProdutoDto>> ListarPaginadoAsync(int page, int pageSize);
         Task<GList<ObterProdutoDto>> PesquisarPaginadoAsync(string search, int page, int pageSize);
+        Task<GList<ObterProdutoDto>> PesquisarProdutoQuantidadePositivaPaginadoAsync(string search, int page, int pageSize);
     }
 }

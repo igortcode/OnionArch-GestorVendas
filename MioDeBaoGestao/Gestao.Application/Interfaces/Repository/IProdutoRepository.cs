@@ -10,5 +10,6 @@ namespace Gestao.Application.Interfaces.Repository
     {
         Task<(IList<ObterProdutoDto>, PagedListMetaDataDTO)> ListarPaginadoAsync(int page, int pageSize);
         Task<(IList<ObterProdutoDto>, PagedListMetaDataDTO)> PesquisarPaginadoAsync(string search, int page, int pageSize);
+        Task<(IList<ObterProdutoDto>, PagedListMetaDataDTO)> PesquisarProdutoQuantidadePositivaPaginadoAsync(string search, int page, int pageSize);
     }
 }

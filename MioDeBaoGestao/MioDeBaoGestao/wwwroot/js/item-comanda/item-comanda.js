@@ -1,7 +1,5 @@
-﻿
-
-function findProdutos() {
-    let url = '/Produto/ListarProdutoPartial'
+﻿function findProdutos() {
+    let url = '/Produto/PesquisarProdutoPartial';
     getAndShowProducts(url, "produtos");
 }
 
@@ -32,21 +30,28 @@ function addItem() {
 
 function selecionarProduto(id) {
     $('#idProd').val(id);
-    $("#modal-qtd").modal('show');
+    let qtd = Number.parseInt(prompt('Adicione a quantidade:', 1));
+
+    if (Number.isInteger(qtd)) {
+        let result = parseInt(qtd);
+        $('#id-prod-qtd').val(result);
+        salvaItem();
+    }
+    else {
+        swal("Adicione um valor correto para a quantidade do produto!", { icon: "error", title: "Valor inválido" });
+    }
 }
 
 function salvaItem() {
 
-    debugger;
-
-    let qtd = $('#prod-qtd').val();
+    let qtd = $('#id-prod-qtd').val();
 
     if (qtd <= 0) {
-        alert("Quantidade deve ser maior do que 0!");
+        swal("Quantidade deve ser maior do que 0!", { icon: "warning", title: "Alerta" });
         return;
     }
 
-    $('#prod-qtd').val('');
+    $('#id-prod-qtd').val('');
 
     let idProduto = $('#idProd').val();
     let idComanda = $('#idComanda').val();
@@ -71,15 +76,13 @@ function ajaxPost(url, dto, divId, message) {
         data: JSON.stringify(dto),
         success: function (response) {
             swal(message, { icon: "success" });
-
             $("#" + divId).html(response);
         },
         error: function (e) {
-            debugger;
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
 
         }
     }).done(function (results) {
@@ -92,14 +95,14 @@ function ajaxGET(url) {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            alert(response);
+            swal(response, { icon: "success" });
             location.reload();
         },
         error: function (e) {
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
 
         }
     }).done(function (results) {
@@ -117,9 +120,9 @@ function getAndShowProducts(url, divId) {
         },
         error: function (e) {
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
         }
     }).done(function (results) {
     });

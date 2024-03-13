@@ -5,7 +5,6 @@ using Gestao.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Produto;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,28 +22,51 @@ namespace MioDeBaoGestao.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string message, TipoNotificacao? tipoNotificacao)
         {
-            var dtos = await _produtoServices.ListarAsync();
+            var dtos = await _produtoServices.ListarPaginadoAsync(1, 5);
 
-            var viewModel = _mapper.Map<IEnumerable<ProdutoViewModel>>(dtos.DTOs);
+            if (!string.IsNullOrEmpty(message) && tipoNotificacao.HasValue)
+            {
+                AddNotification(tipoNotificacao.Value, message);
+            }
+            else
+            {
+                AddOnlyErrorsNotification(dtos.Message);
+            }
 
-            return AdapterView(viewModel, dtos.Message);
+            return AdapterView(dtos, dtos.Message);
         }
 
-        public async Task<ActionResult> ListarProdutoPartial()
+        public async Task<ActionResult> Search(string search, int page)
         {
-            var dtos = await _produtoServices.ListarAsync();
+            var dtos = await _produtoServices.PesquisarPaginadoAsync(search, page, 5);
 
-            var viewModel = _mapper.Map<IEnumerable<ProdutoViewModel>>(dtos.DTOs.Where(a => a.Quantidade > 0));
+            ViewData["search"] = search;
 
-            return PartialView("_ListProdutosPartial", viewModel);
+            AddOnlyErrorsNotification(dtos.Message);
+
+            return View("Index", dtos);
+        }
+
+        public async Task<ActionResult> PesquisarProdutoPartial(string search, int? page)
+        {
+            var dtos = await _produtoServices.PesquisarProdutoQuantidadePositivaPaginadoAsync(search, page ?? 1, 5);
+
+            AddOnlyErrorsNotification(dtos.Message);
+
+            return PartialView("_ListProdutosPartial", dtos);
         }
 
 
         public async Task<ActionResult> Details(int id)
         {
             var dto = await _produtoServices.BuscarPorIdAsync(id);
+
+            if(dto.Message.TpNotif != TipoNotificacao.Sucess)
+            {
+                return RedirectToAction("Index", new { message = dto.Message.Mensagem, tipoNotificacao = dto.Message.TpNotif });
+            }
 
             var viewModel = _mapper.Map<ProdutoViewModel>(dto.DTO);
 
@@ -62,17 +84,24 @@ namespace MioDeBaoGestao.Controllers
         {
             if (!ModelState.IsValid)
                 return View(produto);
-                 
+
             var dto = _mapper.Map<ProdutoDTO>(produto);
 
             var result = await _produtoServices.AdicionarAsync(dto);
 
             AddNotification(result);
 
-            if(!(result.TpNotif == TipoNotificacao.Sucess))
-                return View(produto);
+            if (result.TpNotif != TipoNotificacao.Sucess)
+            {
+                var erros = ModelState.Values
+                                       .SelectMany(x => x.Errors)
+                                       .Select(x => x.ErrorMessage);
 
-            return RedirectToAction(nameof(Index));
+                AddNotification(erros.ToArray());
+                return View(produto);
+            }
+
+            return RedirectToAction(nameof(Index), new { message = result.Mensagem, tipoNotificacao = result.TpNotif });
 
         }
 
@@ -80,13 +109,10 @@ namespace MioDeBaoGestao.Controllers
         {
             var dto = await _produtoServices.BuscarPorIdAsync(id);
 
-            if(dto.DTO is null)
+            if (dto.DTO is null)
             {
-                AddNotification("Não foi encontrado nenhuma entidade com esse identificador");
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "Não foi encontrado nenhuma entidade com esse identificador", tipoNotificacao = dto.Message.TpNotif });
             }
-
 
             var viewModel = _mapper.Map<ProdutoViewModel>(dto.DTO);
 
@@ -98,27 +124,27 @@ namespace MioDeBaoGestao.Controllers
         public async Task<ActionResult> Edit(int id, ProdutoViewModel produto)
         {
             if (!ModelState.IsValid)
+            {
+                var erros = ModelState.Values
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage);
+
+                AddNotification(erros.ToArray());
                 return View(produto);
+            }
 
             var dto = _mapper.Map<ProdutoDTO>(produto);
 
             var result = await _produtoServices.AtualizarAsync(id, dto);
 
-            AddNotification(result);
-
-            if (!(result.TpNotif == TipoNotificacao.Sucess))
-                return View(produto);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = result.Mensagem, tipoNotificacao = result.TpNotif });
         }
 
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _produtoServices.ExcluirAsync(id);
 
-            AddNotification(result);
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = result.Mensagem, tipoNotificacao = result.TpNotif });
         }
     }
 }

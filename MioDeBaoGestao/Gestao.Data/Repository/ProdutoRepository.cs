@@ -46,13 +46,52 @@ namespace Gestao.Data.Repository
             
             var query = _context.Produtos.AsQueryable();
 
-            if(decimal.TryParse(search, out var value))
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(a => a.Quantidade == (int)value || a.Preco == value || a.Nome.Contains(search));
+                if (decimal.TryParse(search, out var value))
+                {
+                    query = query.Where(a => a.Quantidade == (int)value || a.Preco == value || a.Nome.Contains(search));
+                }
+                else
+                {
+                    query = query.Where(a => a.Nome.Contains(search));
+                }
             }
-            else
+
+            var result = await query.ToPagedListAsync(page, pageSize);
+
+            result.GetMetaData().TryParceMetaDataDTO(out var metaDataDTO);
+
+            var dtos = result.Select(a => new ObterProdutoDto
             {
-                query = query.Where(a => a.Nome.Contains(search));
+                Id = a.Id,
+                Preco = a.Preco,
+                Nome = a.Nome,
+                Quantidade = a.Quantidade,
+
+            }).ToList();
+
+
+            return new(dtos, metaDataDTO);
+        }
+
+        public async Task<(IList<ObterProdutoDto>, PagedListMetaDataDTO)> PesquisarProdutoQuantidadePositivaPaginadoAsync(string search, int page, int pageSize)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 5 : pageSize;
+
+            var query = _context.Produtos.Where(a => a.Quantidade > 0).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                if (decimal.TryParse(search, out var value))
+                {
+                    query = query.Where(a => a.Quantidade == (int)value || a.Preco == value || a.Nome.Contains(search));
+                }
+                else
+                {
+                    query = query.Where(a => a.Nome.Contains(search));
+                }
             }
 
             var result = await query.ToPagedListAsync(page, pageSize);

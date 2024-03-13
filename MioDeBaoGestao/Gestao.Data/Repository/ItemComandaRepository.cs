@@ -58,14 +58,19 @@ namespace Gestao.Data.Repository
 
             var query = _context.ItensComanda.Include(a => a.Comanda).Include(a => a.Produto).AsQueryable();
 
-            if (decimal.TryParse(search, out var value))
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(a => a.ComandaId == idComanda && (a.Quantidade == (int)value || a.Preco == value || a.Nome.Contains(search)));
+                if (decimal.TryParse(search, out var value))
+                {
+                    query = query.Where(a => a.ComandaId == idComanda && (a.Quantidade == (int)value || a.Preco == value || a.Nome.Contains(search)));
+                }
+                else
+                {
+                    query = query.Where(a => a.ComandaId == idComanda && a.Nome.Contains(search));
+                }
+
             }
-            else
-            {
-                query = query.Where(a => a.ComandaId == idComanda && a.Nome.Contains(search));
-            }
+
 
             var result = await query.ToPagedListAsync(page, pageSize);
 
