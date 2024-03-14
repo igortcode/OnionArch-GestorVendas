@@ -9,6 +9,7 @@ using Gestao.Core.Entidades;
 using Gestao.Core.Validations.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -246,6 +247,23 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
                 return new GList<ObterItemComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GGet<decimal>> ObterSomatorioValorItemComandaAsync(int idComanda)
+        {
+            try
+            {
+                if(!await _itemComandaRepository.AnyAsync(a => a.ComandaId == idComanda))
+                    return new GGet<decimal> { DTO = 0, Message = new MessageDTO("Busca efetuada com sucesso")};
+
+
+                var value = _itemComandaRepository.GetQueryable().Where(a => a.ComandaId == idComanda).Sum(a => (a.Quantidade * a.Preco));              
+                return new GGet<decimal> { DTO = value, Message = new MessageDTO("Busca efetuada com sucesso!")};
+            }
+            catch (Exception ex)
+            {
+                return new GGet<decimal> { Message = new MessageDTO("Erro ao buscar o valor da comanda.", TipoNotificacao.Erro, ex) };
             }
         }
     }

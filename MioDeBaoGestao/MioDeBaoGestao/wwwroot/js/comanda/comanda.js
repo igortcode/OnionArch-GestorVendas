@@ -1,7 +1,5 @@
 ﻿
 function getCustomHref(page) {
-
-    debugger;
     const pesquisa = $("#pesquisa-txt").val();
     const idAberturaDia = $("#aberturaDia").val();
 

@@ -38,7 +38,7 @@ namespace MioDeBaoGestao.Repository
 
         public async Task<(IList<ObterComandaDTO>, PagedListMetaDataDTO)> ListarPaginadoAsync(int aberturaDiaId, int page, int pageSize)
         {
-            var result = await _context.Comandas.Include(a => a.Itens).Include(a => a.Cliente).Where(a => a.AberturaDiaId == aberturaDiaId).OrderByDescending(a => a.DtCriacao).ToPagedListAsync(page, pageSize);
+            var result = await _context.Comandas.Include(a => a.Itens).Include(a => a.AberturaDia).Include(a => a.Cliente).Where(a => a.AberturaDiaId == aberturaDiaId).OrderByDescending(a => a.DtCriacao).ToPagedListAsync(page, pageSize);
           
             result.GetMetaData().TryParceMetaDataDTO(out var metaData);
 
@@ -49,7 +49,7 @@ namespace MioDeBaoGestao.Repository
 
         public async Task<(IList<ObterComandaDTO>, PagedListMetaDataDTO)> PesquisarPaginadoAsync(int aberturaDiaId, string search, int page, int pageSize)
         {
-            var query =  _context.Comandas.Include(a => a.Itens).Include(a => a.Cliente).Where(a => a.AberturaDiaId == aberturaDiaId);
+            var query =  _context.Comandas.Include(a => a.Itens).Include(a => a.AberturaDia).Include(a => a.Cliente).Where(a => a.AberturaDiaId == aberturaDiaId);
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -82,7 +82,8 @@ namespace MioDeBaoGestao.Repository
                 Id = a.Id,
                 NmCliente = a.Cliente?.Nome,
                 Nome = a.Nome,
-                Total = a.Total
+                Total = a.Total,
+                DiaFechado = a.AberturaDia.Status               
             }).ToList();
 
 

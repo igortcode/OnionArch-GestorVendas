@@ -1,0 +1,101 @@
+﻿@model MioDeBaoGestao.Models.Comanda.ItensComandaViewModel
+
+
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between">
+        @if (!Model.ComandaFechada && !Model.DiaFechado)
+        {
+            <a class="btn btn-outline-success text-success" onclick="findProdutos()"><span><i class="bi bi-bag-plus"></i></span> Adicionar Item</a>
+        }
+        <div class="flex-row row">
+            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="search" />
+            <a class="btn btn-outline-primary col-2" onclick="getData(0, 'mobile')"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+</div>
+
+@foreach (var item in Model.ItensComandas.DTOs)
+{
+    <div class="card m-4">
+        <div class="card-header d-flex justify-content-center">
+            <h5>@item.Nome</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex flex-column container">
+                <div class="flex-row mt-2">
+                    <span>Preço:</span>
+                    <span>@item.Preco</span>
+                </div>
+                <div class="flex-row mt-2">
+                    <span>Quantidade:</span>
+                    <span>@item.Quantidade</span>
+                </div>
+                <div class="flex-row mt-2">
+                    <span>Sub Total:</span>
+                    <span>@(item.Quantidade * item.Preco)</span>
+                </div>
+                <div class="flex-row mt-3 d-flex justify-content-center">
+
+                    @if (!Model.ComandaFechada && !Model.DiaFechado)
+                    {
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-outline-danger text-danger mx-2" onclick="mostrarModalQuantidade('@item.Id')"><i class="bi bi-trash"></i></a>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="text-center px-2 pt-1">
+            <span class="text-info"><b>Total:</b> </span>
+            <span class="text-warning"><b>R$ @ViewData["ValorTotal"]</b></span>
+        </div>
+        <div>
+            <div class="pagination-container">
+                <ul class="pagination">
+
+                    @if (Model.ItensComandas.MetaData.HasPreviousPage)
+                    {
+                        <li class="PagedList-skipToPrevious"><a onclick="getData('@(Model.ItensComandas.MetaData.PageNumber-1)', 'mobile')">&lt;</a></li>
+                    }
+
+                    @for (int i = 0; i < Model.ItensComandas.MetaData.PageCount; i++)
+                    {
+                        int pageNumber = i + 1;
+                        string active = Model.ItensComandas.MetaData.PageNumber == pageNumber ? "active" : "";
+
+                        <li class="@active" onclick="getData('@pageNumber', 'mobile')"><span>@(pageNumber)</span></li>
+
+                    }
+
+                    @if (Model.ItensComandas.MetaData.HasNextPage)
+                    {
+                        <li class="PagedList-skipToNext"><a onclick="getData('@(Model.ItensComandas.MetaData.PageNumber+1)', 'mobile')">&gt;</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*
+
+<div id="modal-produto" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="produtos"></div>
+        </div>
+    </div>
+</div>*@
+
+
+
+
+
+

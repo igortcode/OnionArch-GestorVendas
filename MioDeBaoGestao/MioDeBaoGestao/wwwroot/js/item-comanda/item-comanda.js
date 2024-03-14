@@ -28,6 +28,30 @@ function addItem() {
     $("#modal-produto").modal('show');
 }
 
+function getData(page, consumidor) {
+    let consum = 0;
+    let divId = "";
+    let search = "";
+
+    let idComanda = $("#idComanda").val();
+
+    if (consumidor == 'desktop') {
+        divId = 'itens-comanda-desktop'; 
+        search = $('#pesquisa-txt-desktop').val();
+    }
+    else {
+        divId = 'itens-comanda-mobile';
+        search = $("#pesquisa-txt-mobile").val();
+        consum = 1;
+    }
+
+    debugger;
+
+    let url = "/ItensComanda/PesquisarItensComandaPaginadoPartial?idComanda=" + idComanda + "&consumidor=" + consum + "&search=" + search + "&page=" + page;
+
+    getItensComandaPartialView(url, divId);
+}
+
 function selecionarProduto(id) {
     $('#idProd').val(id);
     let qtd = Number.parseInt(prompt('Adicione a quantidade:', 1));
@@ -71,12 +95,12 @@ function ajaxPost(url, dto, divId, message) {
     $.ajax({
         url: url,
         type: "POST",
-        dataType: "html",
+        dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(dto),
         success: function (response) {
-            swal(message, { icon: "success" });
-            $("#" + divId).html(response);
+            swal(response, { icon: "success" });
+            location.reload();
         },
         error: function (e) {
             if (e.status === 400)
@@ -117,6 +141,25 @@ function getAndShowProducts(url, divId) {
         success: function (response) {
             $("#" + divId).html(response);
             $("#modal-produto").modal('show');
+        },
+        error: function (e) {
+            if (e.status === 400)
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
+            else
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
+        }
+    }).done(function (results) {
+    });
+}
+
+
+function getItensComandaPartialView(url, divId) {
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "html",
+        success: function (response) {
+            $("#" + divId).html(response);
         },
         error: function (e) {
             if (e.status === 400)

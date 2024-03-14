@@ -70,6 +70,10 @@ namespace Gestao.Data.Repository
                 }
 
             }
+            else
+            {
+                query = query.Where(a => a.ComandaId == idComanda);
+            }
 
 
             var result = await query.ToPagedListAsync(page, pageSize);

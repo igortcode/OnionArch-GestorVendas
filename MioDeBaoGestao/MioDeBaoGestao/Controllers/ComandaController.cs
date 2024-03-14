@@ -2,6 +2,7 @@
 using Gestao.Application.DTO.Comanda;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Gestao.Core.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.Comanda;
@@ -129,14 +130,18 @@ namespace MioDeBaoGestao.Controllers
                 return RedirectToAction(nameof(Index), new { IdAberturaDia = idAberturaDia, Message = "Não foi encontrado entidade com esse identificador!", TipoNotificacao = TipoNotificacao.Alert });
             }
 
-            var itens = await _itemComandaServices.ListarItemComandaPorIdEIdComanda(id);
+            var itens = await _itemComandaServices.ListarItemComandaPorIdEIdComandaPaginadoAsync(id, 1, 5);
 
             AddOnlyErrorsNotification(itens.Message);
+
+            var total = await _itemComandaServices.ObterSomatorioValorItemComandaAsync(id);
+
+            ViewData["ValorTotal"] = total.DTO.ToString("n2");
 
             var viewModel = new ComandaViewModel
             {
                 Comanda = comanda.DTO,
-                Itens = itens.DTOs
+                Itens = itens
             };
 
             return View(viewModel);

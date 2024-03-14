@@ -11,6 +11,7 @@ namespace Gestao.Application.DTO.Comanda
         public bool ComandaFechada { get; set; }
         public decimal? Total { get; set; }
         public int AberturaDiaId { get; set; }
+        public bool DiaFechado { get; set; }
         public int? ClienteId { get; set; }
         [DisplayName("Nome Cliente")]
         public string NmCliente { get; set; }
