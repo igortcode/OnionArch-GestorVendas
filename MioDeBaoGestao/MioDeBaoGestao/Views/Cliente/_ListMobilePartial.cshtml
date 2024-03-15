@@ -1,0 +1,64 @@
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Cliente.ObterClienteDTO>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between flex-wrap">
+        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar cliente</a>
+
+        <div class="flex-row row">
+            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="text" value="" />
+            <a class="btn btn-outline-primary col-2" onclick="getData(0, 'mobile')"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="mt-2 d-flex justify-content-center">
+    <div class="pagination-container">
+        <ul class="pagination">
+
+            @if (Model.MetaData.HasPreviousPage)
+            {
+                <li class="PagedList-skipToPrevious"><a onclick="getData('@(Model.MetaData.PageNumber-1)', 'mobile')">&lt;</a></li>
+            }
+
+            @for (int i = 0; i < Model.MetaData.PageCount; i++)
+            {
+                int pageNumber = i + 1;
+                string active = Model.MetaData.PageNumber == pageNumber ? "active" : "";
+
+                <li class="@active" onclick="getData('@pageNumber', 'mobile')"><span>@(pageNumber)</span></li>
+
+            }
+
+            @if (Model.MetaData.HasNextPage)
+            {
+                <li class="PagedList-skipToNext"><a onclick="getData('@(Model.MetaData.PageNumber+1)', 'mobile')">&gt;</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+@foreach (var item in Model.DTOs)
+{
+    <div class="card m-4">
+        <div class="card-header d-flex justify-content-center">
+            <h5>@item.Nome</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex flex-column container">
+                <div class="flex-row mt-2">
+                    <span>CPF:</span>
+                    <span>@item.Cpf</span>
+                </div>
+                <hr />
+                <div class="flex-row mt-3 d-flex justify-content-center">
+                    <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                    <a class="btn btn-outline-danger mx-2" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

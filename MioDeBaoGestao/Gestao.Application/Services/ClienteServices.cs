@@ -29,8 +29,10 @@ namespace Gestao.Application.Services
         {
             try
             {
-                if (await _clienteRepository.AnyAsync(a => a.CPF.Value.Equals(dto.Cpf)))
-                    throw new DomainExceptionValidate("Já existe um cliente cadastrado com esse cpf!");
+
+                if (!string.IsNullOrEmpty(dto.Cpf))
+                    if (await _clienteRepository.AnyAsync(a => a.CPF.Value.Equals(dto.Cpf)))
+                        throw new DomainExceptionValidate("Já existe um cliente cadastrado com esse cpf!");
 
                 var entity = _mapper.Map<Cliente>(dto);
 

@@ -41,18 +41,25 @@ namespace MioDeBaoGestao.Repository
             page = page <= 0 ? 1 : page;
             pageSize = pageSize <= 0 ? 5 : pageSize;
 
-            var result = await _context.Clientes
-                .Where(a => a.Nome.Contains(search) || a.CPF.Value.Contains(search)).Select(a => new ObterClienteDTO
-                {
-                    Id = a.Id,
-                    Cpf = a.CPF.Value,
-                    Nome = a.Nome
-                }).ToPagedListAsync(page, pageSize);
+            var query = _context.Clientes.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(a => a.Nome.Contains(search) || a.CPF.Value.Contains(search));
+            }
 
-            result.GetMetaData().TryParceMetaDataDTO(out var metaDataDTO);
+            var entities = await query.ToPagedListAsync(page, pageSize);
+
+            entities.GetMetaData().TryParceMetaDataDTO(out var metaDataDTO);
+
+            var result = entities.Select(a => new ObterClienteDTO
+            {
+                Id = a.Id,
+                Cpf = a.CPF?.Value,
+                Nome = a.Nome
+            }).ToList();
 
 
-            return new(result.ToList(), metaDataDTO);
+            return new(result, metaDataDTO);
         }
     }
 }
