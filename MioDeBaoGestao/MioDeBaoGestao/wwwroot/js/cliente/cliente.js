@@ -1,6 +1,4 @@
 ﻿function getData(page, consumidor) {
-    debugger;
-
     let search = "";
 
     if (consumidor == 'desktop') {

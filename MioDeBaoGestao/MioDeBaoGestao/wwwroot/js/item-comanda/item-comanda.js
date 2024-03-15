@@ -45,8 +45,6 @@ function getData(page, consumidor) {
         consum = 1;
     }
 
-    debugger;
-
     let url = "/ItensComanda/PesquisarItensComandaPaginadoPartial?idComanda=" + idComanda + "&consumidor=" + consum + "&search=" + search + "&page=" + page;
 
     getItensComandaPartialView(url, divId);
@@ -86,9 +84,6 @@ function salvaItem() {
     let message = "Item adicionado com sucesso!";
 
     ajaxPost(url, data, divId, message);
-
-    $("#modal-qtd").modal('hide');
-    $("#modal-produto").modal('hide');
 }
 
 function ajaxPost(url, dto, divId, message) {
@@ -97,10 +92,17 @@ function ajaxPost(url, dto, divId, message) {
         type: "POST",
         dataType: "json",
         contentType: "application/json",
+        async: false,
         data: JSON.stringify(dto),
         success: function (response) {
-            swal(response, { icon: "success" });
-            location.reload();
+
+            swal(response,
+                {
+                    icon: "success",
+                    buttons: {
+                        confirm: "OK",
+                    }
+                }).then((confirm) => { location.reload(); });
         },
         error: function (e) {
             if (e.status === 400)
@@ -119,8 +121,13 @@ function ajaxGET(url) {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            swal(response, { icon: "success" });
-            location.reload();
+            swal(response,
+                {
+                    icon: "success",
+                    buttons: {
+                        confirm: "OK",
+                    }
+                }).then((confirm) => { location.reload(); });
         },
         error: function (e) {
             if (e.status === 400)
