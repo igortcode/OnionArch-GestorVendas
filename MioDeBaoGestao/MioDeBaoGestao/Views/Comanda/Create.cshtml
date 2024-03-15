@@ -26,7 +26,7 @@
                         <label for="nmCliente" class="control-label">Nome do Cliente</label>
                         <div class="d-flex flex-row">
                             <input disabled name="nmCliente" id="nmCliente" class="form-control" />
-                            <a class="btn btn-outline-primary ml-2" onclick="getClienteModal()"><i class="bi bi-search"></i></a>
+                            <a class="btn btn-outline-primary ml-2" onclick="getClienteModal(0)"><i class="bi bi-search"></i></a>
                         </div>                    
                         <input type="hidden" asp-for="ClienteId" id="idCliente" />
                     </div>
@@ -40,7 +40,15 @@
     </div>
 </div>
 
-<div id="cliente-modal"></div>
+<div id="modal-cliente" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="cliente-modal"></div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

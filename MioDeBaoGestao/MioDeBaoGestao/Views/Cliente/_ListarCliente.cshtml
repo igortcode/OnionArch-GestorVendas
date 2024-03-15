@@ -1,54 +1,72 @@
-﻿@model IEnumerable<Gestao.Application.DTO.Cliente.ObterClienteDTO>
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Cliente.ObterClienteDTO>
 
+<div class="card">
+     <div class="card-header d-flex justify-content-end">
+        <div class="flex-row row">
+            <input id="pesquisa-txt" class="form-control mr-2 col-8" type="search" />
+            <a class="btn btn-outline-primary col-2" onclick="getClienteModal(0)"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered" id="table-cliente">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        CPF
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DTOs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cpf)
+                        </td>
+                        <td>
+                            <div class="gap-3">
+                                <a class="btn btn-outline-primary" title="Selecionar" onclick="selecionarCliente('@item.Id', '@item.Nome')"><i class="bi bi-box-arrow-down-left"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="pagination-container">
+            <ul class="pagination">
 
-<div id="modal-cliente" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="card">
-                <div class="card-body">
-                    <table class="table" id="table-cliente">
-                        <thead>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Nome)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Cpf)
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Nome)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Cpf)
-                                    </td>
-                                    <td>
-                                        <div class="gap-3">
-                                            <a class="btn btn-outline-primary" title="Selecionar" onclick="selecionarCliente('@item.Id', '@item.Nome')"><i class="bi bi-box-arrow-down-left"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                @if (Model.MetaData.HasPreviousPage)
+                {
+                    <li class="PagedList-skipToPrevious"><a onclick="getClienteModal('@(Model.MetaData.PageNumber-1)', 'desktop')">&lt;</a></li>
+                }
+
+                @for (int i = 0; i < Model.MetaData.PageCount; i++)
+                {
+                    int pageNumber = i + 1;
+                    string active = Model.MetaData.PageNumber == pageNumber ? "active" : "";
+
+                    <li class="@active" onclick="getClienteModal('@pageNumber', 'desktop')"><span>@(pageNumber)</span></li>
+
+                }
+
+                @if (Model.MetaData.HasNextPage)
+                {
+                    <li class="PagedList-skipToNext"><a onclick="getClienteModal('@(Model.MetaData.PageNumber+1)', 'desktop')">&gt;</a></li>
+                }
+            </ul>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#table-cliente').DataTable({
-            reposive: true
-        });
-    });
-</script>
 
 
