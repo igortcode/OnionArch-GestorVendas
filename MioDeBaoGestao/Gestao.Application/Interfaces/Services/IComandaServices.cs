@@ -11,6 +11,8 @@ namespace Gestao.Application.Interfaces.Services
         Task<GGet<ObterComandaDTO>> BuscarPorIdAsync(int id);
         GGet<int> BuscarUltimoIdRegistrado();
         Task<GList<ObterComandaDTO>> ListarPorAberturaDiaAsync(int idAberturaDia);
+        Task<GList<ObterComandaDTO>> ListarPaginadoPorAberturaDiaAsync(int idAberturaDia, int page, int pageSize);
+        Task<GList<ObterComandaDTO>> PesquisarPaginadoPorAberturaDiaAsync(int idAberturaDia, string search, int page, int pageSize);
         Task<MessageDTO> ExcluirAsync(int id, int idAberturaDia);
     }
 }

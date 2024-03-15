@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Gestao.Core.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MioDeBaoGestao.Models.AberturaDia;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
@@ -26,6 +28,13 @@ namespace MioDeBaoGestao.Controllers
             var dtos = await _aberturaDiaServices.ListarAberturasDiasAsync();
 
             var viewModels = _mapper.Map<IList<AberturaDiaViewModel>>(dtos.DTOs);
+
+            var diaVigente = dtos.DTOs.FirstOrDefault(a => a.Status == true);
+
+            if (diaVigente != null && User.IsInRole("Vendedor"))
+            {
+                return RedirectToAction("Index", "Comanda", new { idAberturaDia  = diaVigente.Id});
+            }
 
             if (!string.IsNullOrWhiteSpace(message))
             {
@@ -54,9 +63,9 @@ namespace MioDeBaoGestao.Controllers
         }
 
         [Authorize(Roles = "Admin, Gerente")]
-        public async Task<IActionResult> FecharDia()
+        public async Task<IActionResult> FecharDia(int id)
         {
-            var result = await _aberturaDiaServices.FecharDiaAsync();
+            var result = await _aberturaDiaServices.FecharDiaAsync(id);
 
             AddNotification(result);
 

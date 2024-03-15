@@ -25,7 +25,7 @@ namespace MioDeBaoGestao.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string message, TipoNotificacao? tipoNotificacao)
         {
-            var result = await _userServices.ListarUsuarios();
+            var result = await _userServices.ListarUsuariosPaginadoAsync(1, 5);
 
             if (!string.IsNullOrWhiteSpace(message))
             {
@@ -37,7 +37,17 @@ namespace MioDeBaoGestao.Controllers
             }
 
 
-            return View(result.DTOs);
+            return View(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Search(string search, int page)
+        {
+            var result = await _userServices.PesquisarUsuarioPaginadoAsync(search, page, 5);
+
+            AddOnlyErrorsNotification(result.Message);
+
+            return View("Index", result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -130,7 +140,7 @@ namespace MioDeBaoGestao.Controllers
                 return View(dto);
             }
 
-            return RedirectToAction(nameof(Index), "AberturaDia", new {Message = result.Mensagem, TipoNotificacao = result.TpNotif});
+            return RedirectToAction(nameof(Index), "AberturaDia", new { Message = result.Mensagem, TipoNotificacao = result.TpNotif });
         }
 
 

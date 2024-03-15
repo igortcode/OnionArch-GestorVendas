@@ -1,46 +1,14 @@
-﻿@model IEnumerable<Gestao.Application.DTO.Cliente.ObterClienteDTO>
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Cliente.ObterClienteDTO>
 
 @await Html.PartialAsync("../Shared/_Notification")
 
-<div class="card">
-    <div class="card-header">
-        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar cliente</a>
-    </div>
+<div class="d-none d-sm-block">
+    @await Html.PartialAsync("../Cliente/_ListDesktopPartial", Model)
+</div>
 
-    <div class="card-body">
-        <table class="table" id="table-cliente">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nome)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Cpf)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Cpf)
-                        </td>
-                        <td>
-                            <div class="gap-3">
-                                <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div class="d-block d-sm-none">
+    @await Html.PartialAsync("../Cliente/_ListMobilePartial", Model)
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

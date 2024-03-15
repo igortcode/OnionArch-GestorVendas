@@ -13,6 +13,8 @@ namespace Gestao.Application.Interfaces.Services
         Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorUserNameAsync(string userName);
         Task<GGet<ObterUsuarioDTO>> ObterUsuarioPorEmail(string email);
         Task<GList<ObterUsuarioDTO>> ListarUsuarios();
+        Task<GList<ObterUsuarioDTO>> ListarUsuariosPaginadoAsync(int page, int pageSize);
+        Task<GList<ObterUsuarioDTO>> PesquisarUsuarioPaginadoAsync(string search, int page, int pageSize);
         Task<GGet<string>> ObterTokenEsqueciSenha(string email);
         Task<MessageDTO> AlterarSenhaComTokenSenha(UsuarioAlteraSenhaDTO dto);
         Task<MessageDTO> ResetarSenha(UsuarioAlteraSenhaDTO dto);

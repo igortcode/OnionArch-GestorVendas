@@ -8,6 +8,8 @@ namespace Gestao.Application.Interfaces.Services
     {
         Task<GGet<ObterClienteDTO>> BuscarPorIdAsync(int id);
         Task<GList<ObterClienteDTO>> ListarAsync();
+        Task<GList<ObterClienteDTO>> ListarPaginadoAsync(int page, int pageSize);
+        Task<GList<ObterClienteDTO>> PesquisarPaginadoAsync(string search, int page, int pageSize);
         Task<MessageDTO> ExcluirAsync(int id);
     }
 }

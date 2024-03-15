@@ -181,6 +181,28 @@ namespace Gestao.Application.Services
             }
         }
 
+        public async Task<GList<ObterComandaDTO>> ListarPaginadoPorAberturaDiaAsync(int idAberturaDia, int page, int pageSize)
+        {
+            try
+            {
+                page = page < 1 ? 1 : page;
+
+                var entity = await _comandaRepository.ListarPaginadoAsync(idAberturaDia, page, pageSize);
+
+                return new GList<ObterComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
         public async Task<GList<ObterComandaDTO>> ListarPorAberturaDiaAsync(int idAberturaDia)
         {
             try
@@ -190,6 +212,28 @@ namespace Gestao.Application.Services
                 return new GList<ObterComandaDTO>
                 {
                     DTOs = _mapper.Map<IList<ObterComandaDTO>>(entity),
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterComandaDTO>> PesquisarPaginadoPorAberturaDiaAsync(int idAberturaDia, string search, int page, int pageSize)
+        {
+            try
+            {
+                page = page < 1 ? 1 : page;
+
+                var entity = await _comandaRepository.PesquisarPaginadoAsync(idAberturaDia, search, page, pageSize);
+
+                return new GList<ObterComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
                     Message = new MessageDTO("Busca efetuada com sucesso!")
                 };
 

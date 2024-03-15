@@ -21,7 +21,7 @@ namespace MioDeBaoGestao.Profiles
 
             #region Cliente
             CreateMap<ClienteDTO, Cliente>()
-                .ConstructUsing(a => new Cliente(a.Nome, new CpfVO(a.Cpf)));
+                .ConstructUsing(a => new Cliente(a.Nome, string.IsNullOrWhiteSpace(a.Cpf)? null : new CpfVO(a.Cpf)));
 
             CreateMap<Cliente, ObterClienteDTO>()
                 .ForMember(a => a.Cpf, op => op.MapFrom(o => o.CPF.Value));

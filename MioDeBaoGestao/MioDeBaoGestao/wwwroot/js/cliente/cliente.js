@@ -1,8 +1,17 @@
-﻿$(document).ready(function () {
-    $('#table-cliente').DataTable({
-        reposive: true
-    });
-});
+﻿function getData(page, consumidor) {
+    let search = "";
+
+    if (consumidor == 'desktop') {
+        search = $('#pesquisa-txt-desktop').val();
+    }
+    else {
+        search = $("#pesquisa-txt-mobile").val();
+    }
+
+    let url = "/Cliente/Search?search=" + search + "&page=" + page;
+
+    location.href = url;
+}
 
 function selecionarCliente(id, nome) {
 

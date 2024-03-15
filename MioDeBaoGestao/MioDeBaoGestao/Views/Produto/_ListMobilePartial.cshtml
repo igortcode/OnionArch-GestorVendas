@@ -1,0 +1,49 @@
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Produto.ObterProdutoDto>
+
+
+
+<div class="card">
+    <div class="card-header d-flex flex-column justify-content-center ">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-success" style="width: 200px" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar produto</a>
+        </div>
+      
+
+        <div class="flex-row row mt-3 d-flex justify-content-center">
+            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="search" />
+            <a class="btn btn-outline-primary col-2" onclick="getData(0)"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+</div>
+
+@foreach (var item in Model.DTOs)
+{
+    <div class="card m-4">
+        <div class="card-header d-flex justify-content-center">
+            <h5>@item.Nome</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="d-flex flex-column container">
+                <div class="flex-row mt-2">
+                    <span>Preço:</span>
+                    <span>@item.Preco</span>
+                </div>
+                <div class="flex-row mt-2">
+                    <span>Quantidade:</span>
+                    <span>@item.Quantidade</span>
+                </div>
+                <div class="flex-row mt-3 d-flex justify-content-center">
+                    <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                    <a class="btn btn-outline-danger mx-2" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="mt-5 d-flex justify-content-center">
+    <partial name="_PaginationPartial" model="@(Model.MetaData)">
+</div>

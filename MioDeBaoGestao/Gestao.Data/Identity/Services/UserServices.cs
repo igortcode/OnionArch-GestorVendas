@@ -3,6 +3,7 @@ using Gestao.Application.DTO.Usuario;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
 using Gestao.Data.Context;
+using Gestao.Data.Helper;
 using Gestao.Data.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using X.PagedList;
 
 namespace Gestao.Data.Identity.Services
 {
@@ -192,6 +194,43 @@ namespace Gestao.Data.Identity.Services
             }
         }
 
+        public async Task<GList<ObterUsuarioDTO>> ListarUsuariosPaginadoAsync(int page, int pageSize)
+        {
+            try
+            {
+                var query = from user in _context.Users
+                             join userRoles in _context.UserRoles
+                             on user.Id equals userRoles.UserId
+
+                             let role = _context.Roles.Where(a => a.Id == userRoles.RoleId).FirstOrDefault()
+
+                             select new ObterUsuarioDTO
+                             {
+                                 Id = user.Id,
+                                 Email = user.Email,
+                                 UserName = user.UserName,
+                                 RoleId = role.Id,
+                                 RoleName = role.Name,
+                                 Habilitado = user.LockoutEnabled
+                             };
+
+                var result = await query.ToPagedListAsync(page, pageSize);
+
+                result.GetMetaData().TryParceMetaDataDTO(out var metaData);
+
+                return new GList<ObterUsuarioDTO>
+                {
+                    DTOs = result.ToList(),
+                    MetaData = metaData,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterUsuarioDTO> { Message = new MessageDTO("Erro ao buscar o usuário!", TipoNotificacao.Erro, ex) };
+            }
+        }
+
         public async Task<GGet<string>> ObterTokenEsqueciSenha(string email)
         {
             try
@@ -323,6 +362,72 @@ namespace Gestao.Data.Identity.Services
             catch (Exception ex)
             {
                 return new GGet<ObterUsuarioDTO> { Message = new MessageDTO("Erro ao efetuar a busca", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterUsuarioDTO>> PesquisarUsuarioPaginadoAsync(string search, int page, int pageSize)
+        {
+            try
+            {
+                IQueryable<ObterUsuarioDTO> query = null;
+
+                page = page <= 0 ? 1 : page;
+                pageSize = pageSize <= 0 ? 5 : pageSize;
+
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    query = from user in _context.Users
+                            join userRoles in _context.UserRoles
+                            on user.Id equals userRoles.UserId
+
+                            let role = _context.Roles.Where(a => a.Id == userRoles.RoleId).FirstOrDefault()
+
+                            where user.UserName.Contains(search) || user.Email.Contains(search) || role.Name.Contains(search)
+
+                            select new ObterUsuarioDTO
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                UserName = user.UserName,
+                                RoleId = role.Id,
+                                RoleName = role.Name,
+                                Habilitado = user.LockoutEnabled
+                            };
+                }
+                else
+                {
+                    query = from user in _context.Users
+                            join userRoles in _context.UserRoles
+                            on user.Id equals userRoles.UserId
+
+                            let role = _context.Roles.Where(a => a.Id == userRoles.RoleId).FirstOrDefault()
+
+                            select new ObterUsuarioDTO
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                UserName = user.UserName,
+                                RoleId = role.Id,
+                                RoleName = role.Name,
+                                Habilitado = user.LockoutEnabled
+                            };
+                }
+
+                 
+                var result = await query.ToPagedListAsync(page, pageSize);
+
+                result.GetMetaData().TryParceMetaDataDTO(out var metaData);
+
+                return new GList<ObterUsuarioDTO>
+                {
+                    DTOs = result.ToList(),
+                    MetaData = metaData,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterUsuarioDTO> { Message = new MessageDTO("Erro ao buscar o usuário!", TipoNotificacao.Erro, ex) };
             }
         }
 
