@@ -4,7 +4,19 @@ function getCustomHref(page) {
     if (pesquisa.length == 0)
         pesquisa = $("#pesquisa-txt-mobile").val();
 
-    return "/Produto/Search?page=" + page + "&search=" + pesquisa
+    let url = "/Produto/Search?page=" + page + "&search=" + pesquisa
+    url = normalizeUrl(url);
+
+    return url;
+}
+
+function normalizeUrl(url) {
+    let sub = $("#sub-url").val();
+
+    if (sub.length > 0)
+        url = sub + url;
+
+    return url;
 }
 
 function getData(page) {

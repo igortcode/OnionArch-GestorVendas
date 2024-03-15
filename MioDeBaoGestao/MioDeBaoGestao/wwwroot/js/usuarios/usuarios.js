@@ -4,7 +4,20 @@ function getCustomHref(page) {
     if (pesquisa.length == 0)
         pesquisa = $("#pesquisa-txt-mobile").val();
 
-    return "/Usuarios/Search?page=" + page + "&search=" + pesquisa
+    let url = "/Usuarios/Search?page=" + page + "&search=" + pesquisa;
+
+    url = normalizeUrl(url);
+
+    return url;
+}
+
+function normalizeUrl(url) {
+    let sub = $("#sub-url").val();
+
+    if (sub.length > 0)
+        url = sub + url;
+
+    return url;
 }
 
 function getData(page) {
@@ -24,7 +37,9 @@ function atualizarStatus(id, habilitado) {
     })
         .then((update) => {
             if (update) {
-                let url = "/Usuarios/AtualizarStatus?id=" + id
+                let url = "/Usuarios/AtualizarStatus?id=" + id;
+                url = normalizeUrl(url);
+
                 ajaxGET(url);
             }
         });

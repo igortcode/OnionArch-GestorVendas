@@ -1,6 +1,16 @@
 ﻿function findProdutos() {
     let url = '/Produto/PesquisarProdutoPartial';
+    url = normalizeUrl(url);
     getAndShowProducts(url, "produtos");
+}
+
+function normalizeUrl(url) {
+    let sub = $("#sub-url").val();
+
+    if (sub.length > 0)
+        url = sub + url;
+
+    return url;
 }
 
 function mostrarModalQuantidade(idItemComanda) {
@@ -20,6 +30,8 @@ function removeItemComanda() {
     let idComanda = $("#idComanda").val();
 
     let url = "/ItensComanda/Delete?idComanda=" + idComanda + "&idItemComanda=" + idItemComanda + "&quantidade=" + qtdItemComanda;
+
+    url = normalizeUrl(url);
 
     ajaxGET(url);
 }
@@ -47,6 +59,7 @@ function getData(page, consumidor) {
 
     let url = "/ItensComanda/PesquisarItensComandaPaginadoPartial?idComanda=" + idComanda + "&consumidor=" + consum + "&search=" + search + "&page=" + page;
 
+    url = normalizeUrl(url);
     getItensComandaPartialView(url, divId);
 }
 
@@ -82,6 +95,8 @@ function salvaItem() {
     let url = "/ItensComanda/Create"
     let divId = "itens-comanda";
     let message = "Item adicionado com sucesso!";
+
+    url = normalizeUrl(url);
 
     ajaxPost(url, data, divId, message);
 }
