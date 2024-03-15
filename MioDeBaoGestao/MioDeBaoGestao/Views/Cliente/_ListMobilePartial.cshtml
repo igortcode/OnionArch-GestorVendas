@@ -2,11 +2,14 @@
 @model GList<Gestao.Application.DTO.Cliente.ObterClienteDTO>
 
 <div class="card">
-    <div class="card-header d-flex justify-content-between flex-wrap">
-        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar cliente</a>
+    <div class="card-header d-flex flex-column justify-content-center ">
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar cliente</a>
+        </div>
+      
 
-        <div class="flex-row row">
-            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="text" value="" />
+        <div class="flex-row row mt-3 d-flex justify-content-center">
+            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="search" />
             <a class="btn btn-outline-primary col-2" onclick="getData(0, 'mobile')"><i class="bi bi-search"></i></a>
         </div>
     </div>

@@ -2,20 +2,22 @@
 @model GList<Gestao.Application.DTO.Comanda.ObterComandaDTO>
 
 
-
 <div class="card">
-    <div class="card-header d-flex justify-content-between flex-wrap">
-        @if ((bool)ViewData["StatusDia"])
-        {
-            <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
-        }
+    <div class="card-header d-flex flex-column justify-content-center ">
+        <div class="d-flex justify-content-center">
+            @if ((bool)ViewData["StatusDia"])
+            {
+                <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
+            }
+        </div>
 
-        <div class="flex-row row">
-            <input id="pesquisa-txt" class="form-control mr-2 col-8" type="text" value="" onchange="handlerOnChangePesquisa()" />
+        <div class="flex-row row mt-3 d-flex justify-content-center">
+            <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="text" value="" />
             <a class="btn btn-outline-primary col-2" onclick="getData(0)"><i class="bi bi-search"></i></a>
         </div>
     </div>
 </div>
+
 
 @foreach (var item in Model.DTOs)
 {
@@ -44,7 +46,7 @@
                     {
                         <span class="text-success">Aberta</span>
                     }
-                </div>  
+                </div>
                 <hr />
                 <div class="flex-row mt-3 d-flex justify-content-center">
                     <a class="btn btn-outline-primary mx-2" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i> Itens</a>

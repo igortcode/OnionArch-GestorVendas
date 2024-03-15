@@ -1,6 +1,8 @@
 ﻿
 function getCustomHref(page) {
-    const pesquisa = $("#pesquisa-txt").val();
+    let pesquisa = $("#pesquisa-txt-desktop").val();
+    if (pesquisa.length <= 0)
+        pesquisa = $("#pesquisa-txt-mobile").val();
     const idAberturaDia = $("#aberturaDia").val();
 
     return "/Comanda/Search?page=" + page + "&idAberturaDia=" + idAberturaDia + "&search=" + pesquisa

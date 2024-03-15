@@ -14,7 +14,7 @@
 
     <div class="card-body">
         <div class="d-flex flex-column">
-            <div class="d-flex flex-row justify-content-around">
+            <div class="d-flex flex-row flex-wrap justify-content-around">
                 <div>
                     <span><b>Nome:</b> </span>
                     <span>@Html.DisplayFor(model => model.Comanda.Nome)</span>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div>
-                    <span class="mr-2"><b>Nome Cliente:</b> </span>
+                    <span class="mr-2"><b>Cliente:</b> </span>
                     <span>
                         @Html.DisplayFor(model => model.Comanda.NmCliente)
                     </span>
@@ -57,7 +57,7 @@
 <div class="d-block d-sm-none">
     <div id="itens-comanda-mobile">
         @await Html.PartialAsync("../ItensComanda/_ListItensComandaMobilePartial", new MioDeBaoGestao.Models.Comanda.ItensComandaViewModel{ItensComandas = Model.Itens, ComandaFechada = Model.Comanda.ComandaFechada, DiaFechado = Model.Comanda.DiaFechado})
-    </div>>
+    </div>
 </div>
 
 <div id="modal-produto" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

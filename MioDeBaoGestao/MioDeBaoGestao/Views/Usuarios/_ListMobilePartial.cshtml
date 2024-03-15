@@ -1,14 +1,12 @@
 ﻿@using Gestao.Application.DTO.Generic;
-@model GList<Gestao.Application.DTO.Produto.ObterProdutoDto>
-
-
+@model GList<Gestao.Application.DTO.Usuario.ObterUsuarioDTO>
 
 <div class="card">
     <div class="card-header d-flex flex-column justify-content-center ">
         <div class="d-flex justify-content-center">
             <a class="btn btn-success" style="width: 200px" asp-action="Create"><span><i class="bi bi-bag-plus"></i></span> Adicionar produto</a>
         </div>
-      
+
 
         <div class="flex-row row mt-3 d-flex justify-content-center">
             <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="search" />
@@ -21,22 +19,39 @@
 {
     <div class="card m-4">
         <div class="card-header d-flex justify-content-center">
-            <h5>@item.Nome</h5>
+            <h5>@item.UserName</h5>
         </div>
 
         <div class="card-body">
             <div class="d-flex flex-column container">
                 <div class="flex-row mt-2">
-                    <span>Preço:</span>
-                    <span>@item.Preco</span>
+                    <span>Email:</span>
+                    <span>@item.Email</span>
                 </div>
                 <div class="flex-row mt-2">
-                    <span>Quantidade:</span>
-                    <span>@item.Quantidade</span>
+                    <span>Cargo:</span>
+                    <span>@item.RoleName</span>
+                </div>
+                 <div class="flex-row mt-2">
+                    <span>Status:</span>
+                      @if (item.Habilitado)
+                            {
+                                <span class="text-success">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="text-warning">Bloqueado</span>
+                            }
                 </div>
                 <div class="flex-row mt-3 d-flex justify-content-center">
-                    <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                    <a class="btn btn-outline-danger mx-2" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                    @if (item.Habilitado)
+                    {
+                        <a class="btn btn-outline-danger text-danger mx-2" onclick="atualizarStatus('@item.Id', '@item.Habilitado')"><i class="bi bi-person-fill-dash"></i> Desabilitar</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-success text-success mx-2" onclick="atualizarStatus('@item.Id', '@item.Habilitado')"><i class="bi bi-person-fill-check"></i> Habilitar</a>
+                    }
                 </div>
             </div>
         </div>

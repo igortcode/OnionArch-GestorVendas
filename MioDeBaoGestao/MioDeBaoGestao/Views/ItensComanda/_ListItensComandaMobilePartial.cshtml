@@ -1,13 +1,15 @@
 ﻿@model MioDeBaoGestao.Models.Comanda.ItensComandaViewModel
 
+<div class="card mt-3">
+    <div class="card-header d-flex flex-column justify-content-center ">
+        <div class="d-flex justify-content-center">
+            @if (!Model.ComandaFechada && !Model.DiaFechado)
+            {
+                <a class="btn btn-outline-success text-success" onclick="findProdutos()"><span><i class="bi bi-bag-plus"></i></span> Adicionar Item</a>
+            }
+        </div>
 
-<div class="card mt-4">
-    <div class="card-header d-flex justify-content-between">
-        @if (!Model.ComandaFechada && !Model.DiaFechado)
-        {
-            <a class="btn btn-outline-success text-success" onclick="findProdutos()"><span><i class="bi bi-bag-plus"></i></span> Adicionar Item</a>
-        }
-        <div class="flex-row row">
+        <div class="flex-row row mt-3 d-flex justify-content-center">
             <input id="pesquisa-txt-mobile" class="form-control mr-2 col-8" type="search" />
             <a class="btn btn-outline-primary col-2" onclick="getData(0, 'mobile')"><i class="bi bi-search"></i></a>
         </div>
