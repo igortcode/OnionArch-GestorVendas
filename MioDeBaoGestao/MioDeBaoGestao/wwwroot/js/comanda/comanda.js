@@ -5,7 +5,19 @@ function getCustomHref(page) {
         pesquisa = $("#pesquisa-txt-mobile").val();
     const idAberturaDia = $("#aberturaDia").val();
 
-    return "/Comanda/Search?page=" + page + "&idAberturaDia=" + idAberturaDia + "&search=" + pesquisa
+    let url = "/Comanda/Search?page=" + page + "&idAberturaDia=" + idAberturaDia + "&search=" + pesquisa;
+    url = normalizeUrl(url);
+
+    return url;
+}
+
+function normalizeUrl(url) {
+    let sub = $("#sub-url").val();
+
+    if (sub.length > 0)
+        url = sub + url;
+
+    return url;
 }
 
 function handlerOnChangePesquisa() {
@@ -20,23 +32,42 @@ function getData(page) {
 }
 
 function fecharComanda(idComanda, idAberturaDia) {
-    if (confirm("Confirma o fechamento da comanda?")) {
-        let url = '/Comanda/FecharComanda?id=' + idComanda + "&idAberturaDia=" + idAberturaDia;
-        ajaxGET(url);
-    }
-    else {
-        alert("Comanda mantida!");
-    }
+    swal({
+        title: "Fechar comanda",
+        text: "Confirma o fechamento da comanda?",
+        icon: "info",
+        buttons: {
+            cancel: "Cancelar",
+            confirm: "Sim",
+        }
+    })
+        .then((update) => {
+            if (update) {
+                let url = '/Comanda/FecharComanda?id=' + idComanda + "&idAberturaDia=" + idAberturaDia;
+                url = normalizeUrl(url);
+                ajaxGET(url);
+            }
+        });
 }
 
 function excluirComanda(idComanda, idAberturaDia) {
-    if (confirm("Confirma a exclusão da comanda?")) {
-        let url = '/Comanda/Delete?id=' + idComanda + "&idAberturaDia=" + idAberturaDia;
-        ajaxGET(url);
-    }
-    else {
-        alert("Comanda mantida!");
-    }
+
+    swal({
+        title: "Exclusão da comanda",
+        text: "Confirma a exclusão da comanda?",
+        icon: "warning",
+        buttons: {
+            cancel: "Cancelar",
+            confirm: "Excluir",
+        }
+    })
+        .then((update) => {
+            if (update) {
+                let url = '/Comanda/Delete?id=' + idComanda + "&idAberturaDia=" + idAberturaDia;
+                url = normalizeUrl(url);
+                ajaxGET(url);
+            }
+        });
 }
 
 function ajaxGET(url) {
@@ -45,14 +76,19 @@ function ajaxGET(url) {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            alert(response);
-            location.reload();
+            swal(response,
+                {
+                    icon: "success",
+                    buttons: {
+                        confirm: "OK",
+                    }
+                }).then((confirm) => { location.reload(); });
         },
         error: function (e) {
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
 
         }
     }).done(function (results) {

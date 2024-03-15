@@ -1,11 +1,10 @@
 ﻿using Gestao.Application.DTO.Cliente;
-using Gestao.Application.DTO.Generic;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
-using Gestao.Core.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MioDeBaoGestao.Controllers
@@ -46,13 +45,13 @@ namespace MioDeBaoGestao.Controllers
             return View("Index", clientes);
         }
 
-        public async Task<IActionResult> ListarClientePartial()
+        public async Task<IActionResult> ListarClientePartial(string search, int? page)
         {
-            var clientes = await _clienteServices.ListarAsync();
+            var clientes = await _clienteServices.PesquisarPaginadoAsync(search, page ?? 1, 5);
 
             AddOnlyErrorsNotification(clientes.Message);
-            
-            return PartialView("_ListarCliente", clientes.DTOs);
+
+            return PartialView("_ListarCliente", clientes);
         }
 
 
@@ -129,14 +128,16 @@ namespace MioDeBaoGestao.Controllers
             {
                 AddNotification("Não foi encontrado entidade com esse identificador!");
 
-                return RedirectToAction(nameof(Index));
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+                return Json(cliente.Message.Mensagem);
             }
 
             var result = await _clienteServices.ExcluirAsync(id);
 
             AddNotification(result);
 
-            return RedirectToAction(nameof(Index), new { Message = result.Mensagem, TipoNotificacao = result.TpNotif });
+            return Json(result.Mensagem);
         }
     }
 }
