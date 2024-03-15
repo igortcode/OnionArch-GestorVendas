@@ -2,6 +2,13 @@
 using Gestao.Application.Interfaces.Repository;
 using Gestao.Data.Context;
 using Gestao.Data.Repository;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Gestao.Application.DTO.Cliente;
+using Gestao.Application.DTO.Generic;
+using X.PagedList;
+using System.Linq;
+using Gestao.Data.Helper;
 
 namespace MioDeBaoGestao.Repository
 {
@@ -9,6 +16,50 @@ namespace MioDeBaoGestao.Repository
     {
         public ClienteRepository(ApplicationContext applicationContext) : base(applicationContext)
         {
+        }
+
+        public async Task<(IList<ObterClienteDTO>, PagedListMetaDataDTO)> ListarPaginadoAsync(int page, int pageSize)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 5 : pageSize;
+
+            var result = await _context.Clientes.Select(a => new ObterClienteDTO
+            {
+                Id = a.Id,
+                Cpf = a.CPF.Value,
+                Nome = a.Nome
+            }).ToPagedListAsync(page, pageSize);
+
+            result.GetMetaData().TryParceMetaDataDTO(out var metaDataDTO);
+
+
+            return new(result.ToList(), metaDataDTO);
+        }
+
+        public async Task<(IList<ObterClienteDTO>, PagedListMetaDataDTO)> PesquisarPaginadoAsync(string search, int page, int pageSize)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 5 : pageSize;
+
+            var query = _context.Clientes.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(a => a.Nome.Contains(search) || a.CPF.Value.Contains(search));
+            }
+
+            var entities = await query.ToPagedListAsync(page, pageSize);
+
+            entities.GetMetaData().TryParceMetaDataDTO(out var metaDataDTO);
+
+            var result = entities.Select(a => new ObterClienteDTO
+            {
+                Id = a.Id,
+                Cpf = a.CPF?.Value,
+                Nome = a.Nome
+            }).ToList();
+
+
+            return new(result, metaDataDTO);
         }
     }
 }

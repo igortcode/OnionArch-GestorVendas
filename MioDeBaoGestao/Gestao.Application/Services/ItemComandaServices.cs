@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Gestao.Application.DTO.Generic;
 using Gestao.Application.DTO.ItemComanda;
+using Gestao.Application.DTO.Produto;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Repository;
 using Gestao.Application.Interfaces.Services;
@@ -8,6 +9,7 @@ using Gestao.Core.Entidades;
 using Gestao.Core.Validations.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -205,6 +207,63 @@ namespace Gestao.Application.Services
             catch (Exception ex)
             {
                 return new MessageDTO("Erro ao excluir o item de comanda.", TipoNotificacao.Erro, ex);
+            }
+        }
+
+        public async Task<GList<ObterItemComandaDTO>> ListarItemComandaPorIdEIdComandaPaginadoAsync(int idComanda, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _itemComandaRepository.ListarPaginadoPorIdComandaAsync(idComanda, page, pageSize);
+
+                return new GList<ObterItemComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterItemComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GList<ObterItemComandaDTO>> PesquisarItemComandaPorIdEIdComandaPaginadoAsync(string search, int idComanda, int page, int pageSize)
+        {
+            try
+            {
+                var entity = await _itemComandaRepository.PesquisarPaginadoPorIdComandaAsync(search, idComanda, page, pageSize);
+
+                return new GList<ObterItemComandaDTO>
+                {
+                    DTOs = entity.Item1,
+                    MetaData = entity.Item2,
+                    Message = new MessageDTO("Busca efetuada com sucesso!")
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new GList<ObterItemComandaDTO> { Message = new MessageDTO("Erro ao buscar a comanda.", TipoNotificacao.Erro, ex) };
+            }
+        }
+
+        public async Task<GGet<decimal>> ObterSomatorioValorItemComandaAsync(int idComanda)
+        {
+            try
+            {
+                if(!await _itemComandaRepository.AnyAsync(a => a.ComandaId == idComanda))
+                    return new GGet<decimal> { DTO = 0, Message = new MessageDTO("Busca efetuada com sucesso")};
+
+
+                var value = _itemComandaRepository.GetQueryable().Where(a => a.ComandaId == idComanda).Sum(a => (a.Quantidade * a.Preco));              
+                return new GGet<decimal> { DTO = value, Message = new MessageDTO("Busca efetuada com sucesso!")};
+            }
+            catch (Exception ex)
+            {
+                return new GGet<decimal> { Message = new MessageDTO("Erro ao buscar o valor da comanda.", TipoNotificacao.Erro, ex) };
             }
         }
     }

@@ -22,15 +22,34 @@ namespace MioDeBaoGestao.Controllers
             _comandaServices = comandaServices;
         }
 
-        public async Task<IActionResult> ListItensComandaPartial(int idComanda)
+        public async Task<IActionResult> ListItensComandaPaginadoPartial(int idComanda, TipoConsumo consumidor, int? page)
         {
-            var itens = await _itensComandaServices.ListarItemComandaPorIdEIdComanda(idComanda);
+            var itens = await _itensComandaServices.ListarItemComandaPorIdEIdComandaPaginadoAsync(idComanda, page ?? 1, 5);
 
             var comanda = await _comandaServices.BuscarPorIdAsync(idComanda);
 
             AddOnlyErrorsNotification(itens.Message);
 
-            return PartialView("_ListItensComandaPartial", new ItensComandaViewModel { ItensComandas = itens.DTOs, ComandaFechada = comanda.DTO.ComandaFechada});
+            var partial = consumidor == TipoConsumo.Desktop ? "_ListItensComandaDesktopPartial" : "_ListItensComandaMobilePartial";
+
+            return PartialView(partial, new ItensComandaViewModel { ItensComandas = itens, ComandaFechada = comanda.DTO.ComandaFechada});
+        }
+
+        public async Task<IActionResult> PesquisarItensComandaPaginadoPartial(int idComanda, TipoConsumo consumidor, string search, int? page)
+        {
+            var itens = await _itensComandaServices.PesquisarItemComandaPorIdEIdComandaPaginadoAsync(search, idComanda, page ?? 1, 5);
+
+            var comanda = await _comandaServices.BuscarPorIdAsync(idComanda);
+
+            AddOnlyErrorsNotification(itens.Message);
+
+            var partial = consumidor == TipoConsumo.Desktop ? "_ListItensComandaDesktopPartial" : "_ListItensComandaMobilePartial";
+
+            var total = await _itensComandaServices.ObterSomatorioValorItemComandaAsync(idComanda);
+
+            ViewData["ValorTotal"] = total.DTO.ToString("n2");
+
+            return PartialView(partial, new ItensComandaViewModel { ItensComandas = itens, ComandaFechada = comanda.DTO.ComandaFechada });
         }
 
         [HttpPost]
@@ -54,7 +73,7 @@ namespace MioDeBaoGestao.Controllers
                 return Json(result.Mensagem);
             }
 
-            return await ListItensComandaPartial(dto.ComandaId);
+            return Json("Cadastro efetuado com sucesso!");
 
         }
 
@@ -94,7 +113,7 @@ namespace MioDeBaoGestao.Controllers
                 return Json(result.Mensagem);
             }
 
-            return await ListItensComandaPartial(dto.ComandaId);
+            return Json("Cadastro ataulizado com sucesso!"); ;
 
         }
 

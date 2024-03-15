@@ -2,6 +2,7 @@
 using Gestao.Application.DTO.Generic;
 using Gestao.Application.Enums;
 using Gestao.Application.Interfaces.Services;
+using Gestao.Core.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace MioDeBaoGestao.Controllers
 
         public async Task<IActionResult> Index(string message, TipoNotificacao? tipoNotificacao)
         {
-            var clientes = await _clienteServices.ListarAsync();
+            var clientes = await _clienteServices.ListarPaginadoAsync(1,5);
 
             if(!string.IsNullOrEmpty(message) && tipoNotificacao.HasValue)
             {
@@ -33,7 +34,16 @@ namespace MioDeBaoGestao.Controllers
             }
 
 
-            return AdapterView(clientes.DTOs, clientes.Message);
+            return View(clientes);
+        }
+
+        public async Task<IActionResult> Search(string search, int? page)
+        {
+            var clientes = await _clienteServices.PesquisarPaginadoAsync(search, page ?? 1, 5);
+
+            AddOnlyErrorsNotification(clientes.Message);
+
+            return View("Index", clientes);
         }
 
         public async Task<IActionResult> ListarClientePartial()

@@ -81,14 +81,14 @@ namespace Gestao.Application.Services
             }
         }
 
-        public async Task<MessageDTO> FecharDiaAsync()
+        public async Task<MessageDTO> FecharDiaAsync(int id)
         {
             try
             {
                 if (await _aberturaDiaRepository.AnyAsync(a => a.DataAbertura.Date == DateTime.Now.Date && !a.Status))
                     throw new DomainExceptionValidate("O dia já esta fechado.");
 
-                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.DataAbertura.Date == DateTime.Now.Date && a.Status);
+                var dia = await _aberturaDiaRepository.FirstOrDefaultAsync(a => a.Id == id && a.Status);
 
                 if (dia is null)
                     throw new InvalidOperationException("Não foi encontrado nenhum dia cadastrado.");

@@ -19,6 +19,19 @@ namespace MioDeBaoGestao.Controllers
 
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (User.IsInRole("Vendedor"))
+                {
+                    return RedirectToAction("Index", "AberturaDia");
+                }
+            }
+
+
             return View();
         }
 
@@ -39,14 +52,14 @@ namespace MioDeBaoGestao.Controllers
 
             var result = await _loginServices.SignInAsync(login);
 
-            if(result.TpNotif != TipoNotificacao.Sucess)
+            if (result.TpNotif != TipoNotificacao.Sucess)
             {
                 AddNotification(result);
 
                 return View(login);
             }
 
-            if(User.IsInRole("Admin") || User.IsInRole("Gerente"))
+            if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
                 return RedirectToAction("Index", "Home");
 
             return RedirectToAction("Index", "AberturaDia"); ;
@@ -56,8 +69,8 @@ namespace MioDeBaoGestao.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            var result =  await _loginServices.LogoutAsync();
-            
+            var result = await _loginServices.LogoutAsync();
+
             AddNotification(result);
 
             return RedirectToAction("Login", "Login");

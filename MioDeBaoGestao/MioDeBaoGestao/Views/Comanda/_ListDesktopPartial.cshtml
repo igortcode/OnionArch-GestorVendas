@@ -1,0 +1,102 @@
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Comanda.ObterComandaDTO>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        @if ((bool)ViewData["StatusDia"])
+        {
+
+            <a class="btn btn-success" asp-action="Create" asp-route-idAberturaDia="@ViewBag.IdAberturaDia"><span><i class="bi bi-bag-plus"></i></span> Adicionar Comanda</a>
+
+        }
+
+        <div class="flex-row row">
+            <input id="pesquisa-txt-desktop" class="form-control mr-2 col-8" type="text" value="" onchange="handlerOnChangePesquisa()" />
+            <a class="btn btn-outline-primary col-2" onclick="getData(0)"><i class="bi bi-search"></i></a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered" id="table-comanda">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Nome Cliente
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DTOs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NmCliente)
+                        </td>
+                        <td>
+                            @if (item.ComandaFechada)
+                            {
+                                <span class="text-secondary">Fechada</span>
+                            }
+                            else
+                            {
+                                <span class="text-success">Aberta</span>
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Total)
+                        </td>
+                        <td>
+                            <div class="d-none d-sm-block">
+                                <div class="d-flex justify-content-center ">
+                                    <a class="btn btn-outline-primary mx-2" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i></a>
+                                    @if (!item.ComandaFechada && (bool)ViewData["StatusDia"])
+                                    {
+                                        <a class="btn btn-outline-info mx-2" onclick="fecharComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-unlock text-info"></i></a>
+                                        <a class="btn btn-outline-warning mx-2" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i></a>
+                                        <a class="btn btn-outline-danger mx-2" onclick="excluirComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-trash text-danger"></i></a>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="d-block d-sm-none">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ações</a>
+                                        <div class="dropdown-menu">
+                                            <a class="text-primary mx-2 dropdown-item" asp-action="Detail" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-arrows-fullscreen"></i> Itens</a>
+                                            @if (!item.ComandaFechada && (bool)ViewData["StatusDia"])
+                                            {
+                                                <a class="text-info mx-2 dropdown-item" onclick="fecharComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-unlock text-info"></i> Fechar</a>
+                                                <a class="text-warning mx-2 dropdown-item" asp-action="Edit" asp-route-id="@item.Id" asp-route-idAberturaDia="@item.AberturaDiaId"><i class="bi bi-pencil-square"></i> Alterar</a>
+                                                <a class="text-danger mx-2 dropdown-item" onclick="excluirComanda('@item.Id', '@item.AberturaDiaId')"><i class="bi bi-trash text-danger"></i> Remover</a>
+                                            }
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-5 d-flex justify-content-center">
+        <partial name="_PaginationPartial" model="@(Model.MetaData)">
+    </div>
+</div>

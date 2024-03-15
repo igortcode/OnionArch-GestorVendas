@@ -15,7 +15,7 @@ namespace MioDeBaoGestao.Mapping
             builder.OwnsOne(x => x.CPF)
                .Property(x => x.Value)
                .HasMaxLength(14)
-               .IsRequired();
+               .IsRequired(false);
 
             builder.HasMany(a => a.Comandas).WithOne(a => a.Cliente).HasForeignKey(a => a.ClienteId).IsRequired(false);
 

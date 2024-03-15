@@ -28,12 +28,12 @@ namespace MioDeBaoGestao.Controllers
             _aberturaDiaServices = aberturaDiaServices;
         }
 
-        public async Task<IActionResult> Index(int idAberturaDia, string message, TipoNotificacao? tipoNotificacao)
+        public async Task<IActionResult> Index(int idAberturaDia, string message, TipoNotificacao? tipoNotificacao, int? page)
         {
-            if(idAberturaDia <= 0)
+            if (idAberturaDia <= 0)
                 return RedirectToAction(nameof(Index), "AberturaDia", new { Message = "Identificador da Abertura do dia inválido.", TipoNotificacao = TipoNotificacao.Alert });
-            
-            var comandas = await _comandaServices.ListarPorAberturaDiaAsync(idAberturaDia);
+
+            var comandas = await _comandaServices.ListarPaginadoPorAberturaDiaAsync(idAberturaDia, page ?? 1, 5);
 
 
             if (!string.IsNullOrEmpty(message) && tipoNotificacao.HasValue)
@@ -51,9 +51,26 @@ namespace MioDeBaoGestao.Controllers
 
             ViewData["IdAberturaDia"] = idAberturaDia;
 
-            var result = comandas.DTOs.OrderByDescending(a => a.DtCriacao).ToList();
 
-            return View(result);
+            return View(comandas);
+        }
+
+        public async Task<IActionResult> Search(int idAberturaDia, int? page, string search)
+        {
+            if (idAberturaDia <= 0)
+                return RedirectToAction(nameof(Index), "AberturaDia", new { Message = "Identificador da Abertura do dia inválido.", TipoNotificacao = TipoNotificacao.Alert });
+
+            var comandas = await _comandaServices.PesquisarPaginadoPorAberturaDiaAsync(idAberturaDia, search, page ?? 1, 5);
+
+            AddOnlyErrorsNotification(comandas.Message);
+
+            var aberturaDia = await _aberturaDiaServices.BuscarAberturaDiaPorId(idAberturaDia);
+
+            ViewData["StatusDia"] = aberturaDia.DTO.Status;
+
+            ViewData["IdAberturaDia"] = idAberturaDia;
+
+            return View("Index", comandas);
         }
 
         public IActionResult Create(int idAberturaDia)
@@ -113,14 +130,18 @@ namespace MioDeBaoGestao.Controllers
                 return RedirectToAction(nameof(Index), new { IdAberturaDia = idAberturaDia, Message = "Não foi encontrado entidade com esse identificador!", TipoNotificacao = TipoNotificacao.Alert });
             }
 
-            var itens = await _itemComandaServices.ListarItemComandaPorIdEIdComanda(id);
+            var itens = await _itemComandaServices.ListarItemComandaPorIdEIdComandaPaginadoAsync(id, 1, 5);
 
             AddOnlyErrorsNotification(itens.Message);
+
+            var total = await _itemComandaServices.ObterSomatorioValorItemComandaAsync(id);
+
+            ViewData["ValorTotal"] = total.DTO.ToString("n2");
 
             var viewModel = new ComandaViewModel
             {
                 Comanda = comanda.DTO,
-                Itens = itens.DTOs
+                Itens = itens
             };
 
             return View(viewModel);
@@ -165,7 +186,7 @@ namespace MioDeBaoGestao.Controllers
         {
             var result = await _comandaServices.FecharComanda(id, idAberturaDia);
 
-            if(result.TpNotif != TipoNotificacao.Sucess)
+            if (result.TpNotif != TipoNotificacao.Sucess)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(result.Mensagem);

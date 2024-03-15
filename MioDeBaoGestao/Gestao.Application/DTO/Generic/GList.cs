@@ -6,6 +6,8 @@ namespace Gestao.Application.DTO.Generic
     {
         public IList<T> DTOs { get; set; }
 
+        public PagedListMetaDataDTO MetaData { get; set; }
+
         public MessageDTO Message { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿
-
-function findProdutos() {
-    let url = '/Produto/ListarProdutoPartial'
+﻿function findProdutos() {
+    let url = '/Produto/PesquisarProdutoPartial';
     getAndShowProducts(url, "produtos");
 }
 
@@ -30,23 +28,52 @@ function addItem() {
     $("#modal-produto").modal('show');
 }
 
+function getData(page, consumidor) {
+    let consum = 0;
+    let divId = "";
+    let search = "";
+
+    let idComanda = $("#idComanda").val();
+
+    if (consumidor == 'desktop') {
+        divId = 'itens-comanda-desktop'; 
+        search = $('#pesquisa-txt-desktop').val();
+    }
+    else {
+        divId = 'itens-comanda-mobile';
+        search = $("#pesquisa-txt-mobile").val();
+        consum = 1;
+    }
+
+    let url = "/ItensComanda/PesquisarItensComandaPaginadoPartial?idComanda=" + idComanda + "&consumidor=" + consum + "&search=" + search + "&page=" + page;
+
+    getItensComandaPartialView(url, divId);
+}
+
 function selecionarProduto(id) {
     $('#idProd').val(id);
-    $("#modal-qtd").modal('show');
+    let qtd = Number.parseInt(prompt('Adicione a quantidade:', 1));
+
+    if (Number.isInteger(qtd)) {
+        let result = parseInt(qtd);
+        $('#id-prod-qtd').val(result);
+        salvaItem();
+    }
+    else {
+        swal("Adicione um valor correto para a quantidade do produto!", { icon: "error", title: "Valor inválido" });
+    }
 }
 
 function salvaItem() {
 
-    debugger;
-
-    let qtd = $('#prod-qtd').val();
+    let qtd = $('#id-prod-qtd').val();
 
     if (qtd <= 0) {
-        alert("Quantidade deve ser maior do que 0!");
+        swal("Quantidade deve ser maior do que 0!", { icon: "warning", title: "Alerta" });
         return;
     }
 
-    $('#prod-qtd').val('');
+    $('#id-prod-qtd').val('');
 
     let idProduto = $('#idProd').val();
     let idComanda = $('#idComanda').val();
@@ -57,29 +84,31 @@ function salvaItem() {
     let message = "Item adicionado com sucesso!";
 
     ajaxPost(url, data, divId, message);
-
-    $("#modal-qtd").modal('hide');
-    $("#modal-produto").modal('hide');
 }
 
 function ajaxPost(url, dto, divId, message) {
     $.ajax({
         url: url,
         type: "POST",
-        dataType: "html",
+        dataType: "json",
         contentType: "application/json",
+        async: false,
         data: JSON.stringify(dto),
         success: function (response) {
-            swal(message, { icon: "success" });
 
-            $("#" + divId).html(response);
+            swal(response,
+                {
+                    icon: "success",
+                    buttons: {
+                        confirm: "OK",
+                    }
+                }).then((confirm) => { location.reload(); });
         },
         error: function (e) {
-            debugger;
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
 
         }
     }).done(function (results) {
@@ -92,14 +121,19 @@ function ajaxGET(url) {
         type: "GET",
         dataType: "json",
         success: function (response) {
-            alert(response);
-            location.reload();
+            swal(response,
+                {
+                    icon: "success",
+                    buttons: {
+                        confirm: "OK",
+                    }
+                }).then((confirm) => { location.reload(); });
         },
         error: function (e) {
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
 
         }
     }).done(function (results) {
@@ -117,9 +151,28 @@ function getAndShowProducts(url, divId) {
         },
         error: function (e) {
             if (e.status === 400)
-                alert(e.responseText);
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
             else
-                alert("Não foi possível completar a transação!");
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
+        }
+    }).done(function (results) {
+    });
+}
+
+
+function getItensComandaPartialView(url, divId) {
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "html",
+        success: function (response) {
+            $("#" + divId).html(response);
+        },
+        error: function (e) {
+            if (e.status === 400)
+                swal(e.responseText, { icon: "warning", title: "Alerta" });
+            else
+                swal("Não foi possível completar a transação!", { icon: "error", title: "Erro" });
         }
     }).done(function (results) {
     });

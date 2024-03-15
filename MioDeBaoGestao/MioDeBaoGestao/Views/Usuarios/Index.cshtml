@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Gestao.Application.DTO.Usuario.ObterUsuarioDTO>
+﻿@using Gestao.Application.DTO.Generic;
+@model GList<Gestao.Application.DTO.Usuario.ObterUsuarioDTO>
 
 @{
     ViewData["Title"] = "Usuários";
@@ -6,70 +7,12 @@
 
 @await Html.PartialAsync("../Shared/_Notification")
 
-<div class="card">
-    <div class="card-header">
-        <a class="btn btn-success" asp-action="Create"><span><i class="bi bi-person-fill-add"></i></span> Adicionar usuário</a>
-    </div>
+<div class="d-none d-sm-block">
+    @await Html.PartialAsync("../Usuarios/_ListDesktopPartial", Model)
+</div>
 
-    <div class="card-body">
-        <table class="table" id="table-usuario">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.UserName)
-                    </th>
-                    <th class="d-none d-sm-block">
-                        @Html.DisplayNameFor(model => model.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.RoleName)
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td class="d-none d-sm-block">
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoleName)
-                        </td>
-                        <td>
-                            @if (item.Habilitado)
-                            {
-                                <span class="text-success">Ativo</span>
-                            }
-                            else
-                            {
-                                <span class="text-warning">Bloqueado</span>
-                            }
-                        </td>
-                        <td>
-                            <div class="gap-3">
-                                @if (item.Habilitado)
-                                {
-                                    <a class="btn btn-outline-danger text-danger" onclick="atualizarStatus('@item.Id', '@item.Habilitado')"><i class="bi bi-person-fill-dash"></i> Desabilitar</a>
-                                }
-                                else
-                                {
-                                    <a class="btn btn-outline-success text-success" onclick="atualizarStatus('@item.Id', '@item.Habilitado')"><i class="bi bi-person-fill-check"></i> Habilitar</a>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div class="d-block d-sm-none">
+    @await Html.PartialAsync("../Usuarios/_ListMobilePartial", Model)
 </div>
 
 
